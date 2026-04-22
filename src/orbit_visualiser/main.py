@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QMainWindow, QApplication, QHBoxLayout, QFrame, QWidget, QPushButton
+from PyQt6.QtWidgets import QMainWindow, QApplication, QHBoxLayout, QVBoxLayout, QFrame, QWidget, QPushButton
 from orbit_visualiser.core import Orbit, Satellite, CentralBody
 from orbit_visualiser.ui import OrbitFigure, OrbitConfigBuilder, OrbitConfigController
 from orbit_visualiser.ui.common.presets import initial_config
@@ -34,9 +34,8 @@ class MainWindow(QMainWindow):
         main_layout: QHBoxLayout = QHBoxLayout()
 
         vars_frame = QFrame(parent = self)
-        main_layout.addWidget(QPushButton())
-        main_layout.addWidget(QPushButton())
-        main_layout.addWidget(QPushButton())
+
+        vars_frame.setLayout(QVBoxLayout())
 
         widget = QWidget()
         widget.setLayout(main_layout)
