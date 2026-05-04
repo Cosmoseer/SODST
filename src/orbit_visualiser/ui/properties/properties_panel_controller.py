@@ -35,7 +35,7 @@ class PropertiesController():
             return formatted_value
 
         elif np.isnan(value):
-            formatted_value = "n/a"
+            formatted_value = "N/A"
             return formatted_value
 
 
