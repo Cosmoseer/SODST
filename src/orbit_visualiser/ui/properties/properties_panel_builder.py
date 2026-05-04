@@ -65,7 +65,7 @@ class PropertiesBuilder(Builder):
         orbital_props_frame.pack(side = "top", anchor = "nw", pady = (2, 0))
 
         sat_props_frame = LabelFrame(
-            self._properties_frame, bd = 1, relief = "sunken", text = "Current satellite state",
+            self._properties_frame, bd = 1, relief = "sunken", text = "Satellite state",
             font = self._subtitle_font, width = 244
         )
         self._populate_properties(sat_props_frame, self._satellite_properties, format_value)
