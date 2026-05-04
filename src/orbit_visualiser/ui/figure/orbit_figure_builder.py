@@ -8,8 +8,31 @@ from mpl_toolkits.mplot3d.art3d import Line3D
 import numpy as np
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 
-# TODO: Fix bug where scroll zoom doesn't register as changing the view so the native matplotlib home button has unexpected (and often undesirable) behaviour.
-# TODO: Split into builder and controller
+class OrbitToolbar(NavigationToolbar2Tk):
+    """
+    Custom NavigationToolbar2TK class to customise toolbar items, toolbar message and home buttom
+    function.
+    """
+
+    def __init__(self, canvas: FigureCanvasTkAgg, ax: Axes3D, window: Frame = None, *, pack_toolbar: bool = True):
+        self.toolitems = (
+            ('Home', 'Reset original view', 'home', 'home'),
+            ('Pan', 'Pan axes with left mouse, zoom with right', 'move', 'pan'),
+            ('Save', 'Save the figure', 'filesave', 'save_figure'),
+        )
+        super().__init__(canvas, window, pack_toolbar = pack_toolbar)
+        self._ax = ax
+
+    def set_message(self, msg):
+        pass
+
+    def home(self, *args):
+        self._ax.set_xlim(-100_000, 100_000)
+        self._ax.set_ylim(-100_000, 100_000)
+        self._ax.set_zlim(-100_000, 100_000)
+        super().home()
+
+
 class OrbitFigureBuilder():
 
     DISPLAY_TEXT_OFFSET = (1.5, 1.5)
@@ -72,12 +95,6 @@ class OrbitFigureBuilder():
     def _configure_figure_parameters() -> None:
         mpl.rcParams['axes3d.mouserotationstyle'] = 'azel'
 
-        NavigationToolbar2.toolitems = (
-            ('Home', 'Reset original view', 'home', 'home'),
-            ('Pan', 'Pan axes with left mouse, zoom with right', 'move', 'pan'),
-            ('Save', 'Save the figure', 'filesave', 'save_figure'),
-        )
-
     def _plot_central_body(self) -> None:
         u, v = np.meshgrid(np.linspace(0, 2*np.pi, 25), np.linspace(0, np.pi, 25))
         r = self._da.satellite.central_body.r
@@ -109,7 +126,7 @@ class OrbitFigureBuilder():
         self._canvas.get_tk_widget().pack(side = "top", fill = "both", expand = True)
 
     def _build_toolbar(self) -> None:
-        toolbar = NavigationToolbar2Tk(self._canvas, self._figure_frame, pack_toolbar = False)
+        toolbar = OrbitToolbar(self._canvas, self._ax, self._figure_frame, pack_toolbar = False)
         toolbar.update()
         toolbar.pack(side = "bottom", fill = "x")
 
