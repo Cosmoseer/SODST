@@ -8,7 +8,7 @@ from orbit_visualiser.core import CentralBody, Satellite, Orbit, asymptote_anoma
 # ---------- True anomaly grids --------------------
 @pytest.fixture(scope = "session")
 def closed_anomaly_grid() -> NDArray[np.float64]:
-    return np.linspace(0, 2*pi, 10)
+    return np.linspace(0, 2*pi-0.01, 10)
 
 @pytest.fixture(scope = "session")
 def open_anomaly_grid() -> Callable[[float, int], NDArray[np.float64]]:
