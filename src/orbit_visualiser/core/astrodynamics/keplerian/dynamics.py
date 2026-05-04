@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.typing import NDArray
+from functools import cache
 from orbit_visualiser.core.astrodynamics.types import OrbitType
 from orbit_visualiser.core.astrodynamics.keplerian.classification import orbit_type
 
@@ -21,6 +22,7 @@ def specific_ang_momentum_from_state(r: NDArray[np.float64], v: NDArray[np.float
     """
     return np.cross(r, v)
 
+@cache
 def specific_ang_momentum(mu: float, p: float) -> float:
     """
     Calculates the magnitude of the specific angular momentum of a satellite using the gravitational
@@ -40,6 +42,7 @@ def specific_ang_momentum(mu: float, p: float) -> float:
     """
     return np.sqrt(mu*p)
 
+@cache
 def specific_orbital_energy(mu: float, a: float) -> float:
     """
     Calculates the specific orbital energy using the gravitational parameter and semi-major axis.
@@ -61,6 +64,7 @@ def specific_orbital_energy(mu: float, a: float) -> float:
 
     return -mu/(2*a)
 
+@cache
 def characteristic_energy(mu: float, a: float) -> float:
     """
     Calculates the characteristic energy from the semi-major axis and gravitational parameter.
@@ -84,6 +88,7 @@ def characteristic_energy(mu: float, a: float) -> float:
 
     return -mu/a
 
+@cache
 def excess_speed(e: float, mu: float, a: float) -> float:
     """
     Calculates the hyperbolic excess velocity (the velocity magnitude at infinity) for open orbits
@@ -112,6 +117,7 @@ def excess_speed(e: float, mu: float, a: float) -> float:
 
     return np.sqrt(mu/abs(a))
 
+@cache
 def vis_viva_speed(r: float, a: float, mu: float) -> float:
     """
     Calculates orbital speed using the vis viva equation from the radial length, semi-major axis

@@ -1,6 +1,7 @@
 from math import pi
 import numpy as np
 from numpy.typing import NDArray
+from functools import cache
 from orbit_visualiser.core.astrodynamics.types import OrbitType
 from orbit_visualiser.core.astrodynamics.keplerian.classification import orbit_type
 from orbit_visualiser.core.astrodynamics.keplerian.dynamics import specific_ang_momentum_from_state
@@ -91,6 +92,7 @@ def true_anomaly(r: NDArray[np.float64], e_vect: NDArray[np.float64], e: float, 
 
     return true_anomaly
 
+@cache
 def semi_parameter_from_momentum(h: float, mu: float) -> float:
     """
     Calculates the semi-parameter using the gravitational parameter and specific angular momentum.
@@ -109,6 +111,7 @@ def semi_parameter_from_momentum(h: float, mu: float) -> float:
     """
     return h**2/mu
 
+@cache
 def semi_parameter_from_eccentricity(e: float, rp: float) -> float:
     """
     Calculates the semi-parameter using the eccentricity and radius of periapsis.
@@ -127,6 +130,7 @@ def semi_parameter_from_eccentricity(e: float, rp: float) -> float:
     """
     return rp*(1 + e)
 
+@cache
 def semimajor_axis(e: float, rp: float) -> float:
     """
     Calculates the semimajor axis using the eccentricity and radius of periapsis.
@@ -148,6 +152,7 @@ def semimajor_axis(e: float, rp: float) -> float:
 
     return rp/(1 - e)
 
+@cache
 def semiminor_axis(e: float, a: float) -> float:
     """
     Calculates the semi-minor axis using the eccentricity and semi-major axis.
@@ -173,6 +178,7 @@ def semiminor_axis(e: float, a: float) -> float:
 
     return np.nan
 
+@cache
 def radius_of_periapsis(p: float, e: float) -> float:
     """
     Calculates the radius of periapsis from the semi-parameter and eccentricity.
@@ -210,6 +216,7 @@ def periapsis(p: float, e: NDArray[np.float64]) -> NDArray[np.float64]:
     e_norm = np.linalg.norm(e)
     return p/((e_norm(1 + e_norm)))*e
 
+@cache
 def radius_of_apoapsis(e: float, a: float) -> float:
     """
     Calculates the radius of apoapsis using the eccentricity and semi-major axis.
@@ -254,6 +261,7 @@ def apoapsis(e: NDArray[np.float64], a: float) -> NDArray[np.float64]:
 
     return -(a*(1 + e_norm)/e_norm)*e
 
+@cache
 def asymptote_anomaly(e: float) -> float:
     """
     Calculate the asymptote of the true anomaly for open orbits using the eccentricity.
@@ -275,6 +283,7 @@ def asymptote_anomaly(e: float) -> float:
 
     return np.arccos(-1/e)
 
+@cache
 def turning_angle(e: float) -> float:
     """
     Calculate the turning angle for open orbits using the eccentricity
@@ -296,6 +305,7 @@ def turning_angle(e: float) -> float:
 
     return 2*np.arcsin(1/e)
 
+@cache
 def aiming_radius(b: float) -> float:
     """
     Calculate the aiming radius for hyperbolic orbits using the semi-minor axis
@@ -315,6 +325,7 @@ def aiming_radius(b: float) -> float:
 
     return -b
 
+@cache
 def orbital_period(e: float, mu: float, a: float) -> float:
     """
     Calculates the orbital period of closed orbits.
@@ -338,6 +349,7 @@ def orbital_period(e: float, mu: float, a: float) -> float:
 
     return (2*pi/np.sqrt(mu))*np.sqrt(a)**3
 
+@cache
 def mean_motion(e: float, mu: float, p: float, a: float) -> float:
     """
     Calculates the mean motion, using different formulae based on orbit type.

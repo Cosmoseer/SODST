@@ -1,8 +1,10 @@
 from orbit_visualiser.core.astrodynamics.types import OrbitType, OrbitMotion
 from math import pi
+from functools import cache
 
 ECC_TOL = 1e-8
 
+@cache
 def orbit_type(e: float) -> OrbitType:
     """
     Returns the orbit type based on the eccentricity.
@@ -28,6 +30,7 @@ def orbit_type(e: float) -> OrbitType:
 
     return OrbitType.HYPERBOLIC
 
+@cache
 def orbit_motion_type(i: float) -> OrbitMotion:
     """
     Returns the orbit motion type based on the inclination.
