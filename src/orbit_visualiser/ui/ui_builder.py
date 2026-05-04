@@ -1,4 +1,5 @@
 from tkinter import Frame
+from ttkbootstrap import Window
 from ttkbootstrap.scrolled import ScrolledFrame
 from typing import Callable
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
@@ -32,7 +33,7 @@ class UIBuilder():
         "expand": True
     }
 
-    def __init__(self, root: Frame, oda: OrbitDataAccess):
+    def __init__(self, root: Window, oda: OrbitDataAccess):
         self._root = root
         self._oda = oda
 
