@@ -11,7 +11,7 @@ class OrbitVisualiser():
     PROPS_GEOMETRY = ("left", "nw")
 
     def __init__(self, root: Tk):
-        root.title("2D Orbit Visualiser")
+        root.title("3D Orbit Visualiser")
 
         if sys.platform.startswith("win"):
             root.state("zoomed")
