@@ -6,7 +6,9 @@ All notable changes to this project will be documented here.
 - Certain orbital parameters can now be displayed in the plot
 - 3D orbits now implemented
 - UI overhauled to variables | plot | properties
-- UI widgets no longer overlap in Linux
+- UI now built based on OS being used
+- Fixed figure home button bug where it sometimes didn't return plot to original view
+- Fixed issue where certain UI elements in Linux overlapped
 
 # 0.4.5
 - Refactored the design architecture of the core objects
