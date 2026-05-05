@@ -35,9 +35,9 @@ class OrbitFigureController():
 
     def reset_axes(self) -> None:
         axis: Axes3D = self._builder.axis
-        axis.set_xlim(-100_000, 100_000)
-        axis.set_ylim(-100_000, 100_000)
-        axis.set_zlim(-100_000, 100_000)
+        axis.set_xlim(-self._builder.LIM, self._builder.LIM)
+        axis.set_ylim(-self._builder.LIM, self._builder.LIM)
+        axis.set_zlim(-self._builder.LIM, self._builder.LIM)
 
         self._builder.canvas.draw_idle()
 
