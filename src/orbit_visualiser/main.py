@@ -1,26 +1,17 @@
 import sys
 from ttkbootstrap import Window
 from orbit_visualiser.core import Orbit, Satellite, CentralBody
-from orbit_visualiser.ui import UIController, UIBuilder, OrbitDataAccess, initial_config
+from orbit_visualiser.ui import UIController, UIBuilder, OrbitDataAccess, GeometryManager, initial_config
 
 # TODO: Replace gif in README
 class OrbitVisualiser():
 
-    INPUT_GEOMETRY = ("left", "nw")
-    FIGURE_GEOMETRY = ("left", "nw")
-    PROPS_GEOMETRY = ("left", "nw")
-
-    def __init__(self, root: Window):
+    def __init__(self, root: Window, geo_manager: GeometryManager):
         root.title("3D Orbit Visualiser")
-
-        if sys.platform.startswith("win"):
-            root.state("zoomed")
-        else:
-            root.state("normal")
 
         oda: OrbitDataAccess = self._initialise_orbit_objects()
 
-        builder = UIBuilder(root, oda)
+        builder = UIBuilder(root, oda, geo_manager)
         controller = UIController(builder, oda)
         builder.build(
             controller.reset_state,
@@ -52,8 +43,10 @@ class OrbitVisualiser():
 # TODO: Add variable presets (Earth - ISS, Earth - Geostationary, Mars - Phobos etc).
 # TODO: Write proper docstrings
 if __name__ == "__main__":
-    root = Window(themename = "darkly")
+    root = Window(themename = "darkly", position = (0, 0))
 
-    app: OrbitVisualiser = OrbitVisualiser(root)
+    geo_manager = GeometryManager(sys.platform, root)
+
+    app: OrbitVisualiser = OrbitVisualiser(root, geo_manager)
 
     root.mainloop()
