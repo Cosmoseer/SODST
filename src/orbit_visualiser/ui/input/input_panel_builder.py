@@ -6,18 +6,16 @@ from orbit_visualiser.ui.common.builder import Builder
 from orbit_visualiser.ui.common.specs import VariableSpec
 from orbit_visualiser.ui.common.presets import initial_config
 from orbit_visualiser.ui.data_access import OrbitDataAccess
+from orbit_visualiser.ui.common.geometry import (GeometryManager, FrameGeometry, EntryGeometry,
+                                                 SliderGeometry)
 
 
 class InputBuilder(Builder):
 
-    def __init__(
-            self,
-            input_frame: Frame,
-            oda: OrbitDataAccess
-    ):
+    def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
         self._input_frame = input_frame
-
         self._oda = oda
+        self._geo_manager = geo_manager
 
         self._e_specs: VariableSpec = VariableSpec(
             "Eccentricity",
@@ -164,24 +162,31 @@ class InputBuilder(Builder):
 
         self._build_separator(var_frame, "Variables")
 
+        geometry = self._geo_manager.input_widgets
+
         # Build orbital geometry frame
         orbital_geom_frame = LabelFrame(
             var_frame, bd = 2, relief = "sunken", text = "Orbital geometry", font = self._subtitle_font
         )
         self._e_slider, self._e_entry = self._build_input_frame(
-            orbital_geom_frame, "e", self._variable_specs["e"], validate_input, slider_changed
+            orbital_geom_frame, "e", self._variable_specs["e"], geometry,
+            validate_input, slider_changed
         )
         self._rp_slider, self._rp_entry = self._build_input_frame(
-            orbital_geom_frame, "rp", self._variable_specs["rp"], validate_input, slider_changed
+            orbital_geom_frame, "rp", self._variable_specs["rp"], geometry,
+            validate_input, slider_changed
         )
         self._raan_slider, self._raan_entry = self._build_input_frame(
-            orbital_geom_frame, "raan", self._variable_specs["raan"], validate_input, slider_changed
+            orbital_geom_frame, "raan", self._variable_specs["raan"], geometry,
+            validate_input, slider_changed
         )
         self._i_slider, self._i_entry = self._build_input_frame(
-            orbital_geom_frame, "i", self._variable_specs["i"], validate_input, slider_changed
+            orbital_geom_frame, "i", self._variable_specs["i"], geometry,
+            validate_input, slider_changed
         )
         self._omega_slider, self._omega_entry = self._build_input_frame(
-            orbital_geom_frame, "omega", self._variable_specs["omega"], validate_input, slider_changed
+            orbital_geom_frame, "omega", self._variable_specs["omega"], geometry,
+            validate_input, slider_changed
         )
         orbital_geom_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
@@ -190,7 +195,8 @@ class InputBuilder(Builder):
             var_frame, bd = 2, relief = "sunken", text = "Central body", font = self._subtitle_font
         )
         self._mu_slider, self._mu_entry = self._build_input_frame(
-            central_body_frame, "mu", self._variable_specs["mu"], validate_input, slider_changed
+            central_body_frame, "mu", self._variable_specs["mu"], geometry,
+            validate_input, slider_changed
         )
         central_body_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
@@ -199,7 +205,8 @@ class InputBuilder(Builder):
             var_frame, bd = 2, relief = "sunken", text = "Satellite", font = self._subtitle_font
         )
         self._nu_slider, self._nu_entry = self._build_input_frame(
-            sat_frame, "nu", self._variable_specs["nu"], validate_input, slider_changed
+            sat_frame, "nu", self._variable_specs["nu"], geometry,
+            validate_input, slider_changed
         )
         sat_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
@@ -207,17 +214,19 @@ class InputBuilder(Builder):
         reset_button = Button(var_frame, text = "Reset", command = reset)
         reset_button.pack(side = "top", anchor = "nw", pady = (4, 0))
 
-        var_frame.pack(side = "top", anchor = "nw", pady = (2, 0))
+        var_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
     def _build_input_frame(
             self,
             root: Frame,
             variable: str,
             spec: VariableSpec,
+            geometry: tuple[FrameGeometry, SliderGeometry, EntryGeometry ],
             validate_input: Callable,
             slider_changed: Callable
     ) -> tuple[Scale, Entry]:
-        frame = Frame(root, width = 290, height = 75, relief = "groove", bd = 1)
+        frame_geo = geometry[0]
+        frame = Frame(root, width = frame_geo.width, height = frame_geo.height, relief = "groove", bd = 1)
 
         units = spec.units
         label = Label(frame, text = f"{spec.label}{"" if units is None else f" ({units})"}:")
@@ -226,17 +235,19 @@ class InputBuilder(Builder):
         slider = self._build_slider(
             frame,
             variable,
+            geometry[1],
             spec,
             slider_changed
         )
 
-        entry = Entry(frame, width = 10)
+        entry_geom = geometry[2]
+        entry = Entry(frame, width = entry_geom.width)
         entry.insert(0, f"{spec.getter(self._oda.satellite): 0.{spec.decimal_places}f}".strip())
         entry.configure(state = spec.init_state)
         entry.bind("<Return>", partial(validate_input, variable))
-        entry.place(x = 5, y = 20)
+        entry.place(x = entry_geom.x, y = entry_geom.y)
 
-        frame.pack(side = "top", anchor = "nw", pady = 2)
+        frame.pack(side = frame_geo.side, anchor = frame_geo.anchor, pady = frame_geo.pady)
 
         return slider, entry
 
@@ -244,6 +255,7 @@ class InputBuilder(Builder):
             self,
             root: Frame,
             variable: str,
+            geometry: SliderGeometry,
             spec: VariableSpec,
             slider_changed: Callable
     ) -> Scale:
@@ -265,5 +277,5 @@ class InputBuilder(Builder):
         slider_var.set(spec.getter(self._oda.satellite))
 
         slider: Scale = self.__getattribute__(slider_name)
-        slider.place(x = 5, y = 45, anchor = "nw")
+        slider.place(x = geometry.x, y = geometry.y, anchor = "nw")
         return slider
