@@ -139,7 +139,8 @@ As of the current version (v0.4.5) there is no CLI or GUI functionality for the 
 ```python
 if __name__ == "__main__":
 
-    orbit = Orbit.from_orbital_elements(e = 0.0, rp = 50_000.0, mu = 398_600.0, nu = 0.0)
+    orbit = Orbit.from_orbital_elements(e = 0.0, rp = 50_000.0, nu = 0.0, raan = 0.0, i = 0.0,
+                                        omega = 0.0, mu = 398_600.0,)
 
     sol = run_orbit_prop(orbit, orbit.orbital_period)
 
@@ -147,12 +148,12 @@ if __name__ == "__main__":
     print(init_conditions)
     print(sol.y[:, -1])
 
-    r0 = np.linalg.norm(init_conditions[:2])
-    rf = np.linalg.norm(sol.y[:2, -1])
+    r0 = np.linalg.norm(init_conditions[:3])
+    rf = np.linalg.norm(sol.y[:3, -1])
 
     print(f"Difference in radius after propagating: {rf - r0}")
 ```
-The orbit propagation function takes the Orbit object and propagation end time (the start time is always 0, and begins the propagation at the true anomaly (nu) set in the constructor Orbit.from_orbital_elements). The values set in the code snippet above result in the propagation of a circular orbit of radius 50,000km, starting at the perifocal position (50000, 0) lasting for one orbital period. For non-circular orbits nu = 0.0 is periapsis. The true anomaly is in radians, so nu = pi is apoapsis.
+The orbit propagation function takes the Orbit object and propagation end time (the start time is always 0, and begins the propagation at the true anomaly (nu) set in the constructor Orbit.from_orbital_elements). The values set in the code snippet above result in the propagation of a circular orbit of radius 50,000km, starting at the perifocal position (50000, 0, 0) lasting for one orbital period. For non-circular orbits nu = 0.0 is periapsis. The true anomaly is in radians, so nu = pi is apoapsis.
 
 In order to get accurate results you should keep the end time on the order of 10 or at most 100 periods. The integrators used by scipy aren't symplectic, so there is significant energy drift over longer propagations.
 
@@ -163,9 +164,11 @@ The current print statements are just quick sanity checks to show that after a w
 As an example if you wanted to propagate the ISS then you might edit the above code snippet to:
 ```python
 if __name__ == "__main__":
-    # Approximate eccentricity and radius of periapsis (in km) for the ISS, with mu representing
-    # the gravitational parameter of earth in km^3/s^2
-    iss_orbit = Orbit.from_orbital_elements(e = 0.0002267, rp = 6778, mu = 398_600.0, nu = 0.0)
+    # Approximate eccentricity, radius of periapsis (km), right ascension of the ascending node (rad),
+    # inclination (rad) and argument of perigee (rad) for the ISS, with mu representing the
+    # gravitational parameter of earth in km^3/s^2
+    iss_orbit = Orbit.from_orbital_elements(e = 0.0002267, rp = 6778, nu = 0.0, raan = 4.319,
+                                            i = 0.901, omega = 2.278, mu = 398_600.0)
 
     # Runs the propagation for 1 period, returning the ISS back to periapsis
     sol = run_orbit_prop(iss_orbit, iss_orbit.orbital_period)
@@ -176,19 +179,9 @@ if __name__ == "__main__":
     # Grabs the array of solutions (sol.y) and prints the last entry
     print(sol.y[:, -1])
 
-    r0 = np.linalg.norm(init_conditions[:2])
-    rf = np.linalg.norm(sol.y[:2, -1])
+    r0 = np.linalg.norm(init_conditions[:3])
+    rf = np.linalg.norm(sol.y[:3, -1])
 
     print(f"Difference in radius after propagating: {rf - r0}")
 ```
 Then running the script will run the propagation and print out the results.
-
-Alternatively, you can pass the initial position, velocity and gravitational parameter directly to Orbit by using
-```python
-orbit = Orbit(position = np.array([50_000.0, 0.0]), velocity = np.array([0.0, 2.82]), mu = 398600.0)
-```
-Since we are in the perifocal frame then all orbits are oriented with the periapsis and apoapsis on the x-axis, so the true anomaly is calculated from
-```python
-np.atan2(0.0, 50_000.0) = 0.0
-```
-You can pass this Orbit object into run_orbit_prop (as well as your desired run time) just as before.
