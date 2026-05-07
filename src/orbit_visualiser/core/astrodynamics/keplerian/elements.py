@@ -87,6 +87,8 @@ def true_anomaly(r: NDArray[np.float64], e_vect: NDArray[np.float64], e: float, 
 
     true_anomaly = np.arccos(dot)
 
+    # First check is if the satellite is moving towards periapsis.
+    # TODO: Second check only works for raan = 0
     if (v_r < 0 and not np.isclose(v_r, 0)) or (orbit_type(e) is OrbitType.CIRCULAR and r[1] < 0 and not np.isclose(r[1], 0)):
         return 2*pi - true_anomaly
 
