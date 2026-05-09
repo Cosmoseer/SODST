@@ -1,5 +1,4 @@
 from scipy.integrate import solve_ivp
-from functools import partial
 from math import ceil
 import numpy as np
 from numpy.typing import NDArray
@@ -7,7 +6,7 @@ from orbit_visualiser.core.orbit import Orbit
 
 # TODO: Implement CLI input.
 
-def two_body_pf_ode(t: float, state: NDArray[np.float64], mu: float) -> NDArray[np.float64]:
+def two_body_ode(t: float, state: NDArray[np.float64], mu: float) -> NDArray[np.float64]:
     """
     The second order ordinary differential equation describing the relative motion of a body in a
     two body problem.
@@ -78,7 +77,7 @@ def run_orbit_prop(orbit: Orbit, t_end: float, period_frac_per_step: int = 500):
     init_conditions = get_init_conditions_from_orbit(orbit)
 
     result = solve_ivp(
-        two_body_pf_ode,
+        two_body_ode,
         [0, t_end],
         init_conditions,
         args = (orbit.mu,),
