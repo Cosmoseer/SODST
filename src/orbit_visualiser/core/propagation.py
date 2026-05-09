@@ -105,12 +105,13 @@ if __name__ == "__main__":
                                         omega = 0.0, mu = 398_600.0,)
 
     sol = run_orbit_prop(orbit, orbit.orbital_period)
+    final_state = sol[-1][1]
+    final_position = final_state[:3]
 
     init_conditions = get_init_conditions_from_orbit(orbit)
     print(init_conditions)
-    print(sol.y[:, -1])
 
     r0 = np.linalg.norm(init_conditions[:3])
-    rf = np.linalg.norm(sol.y[:3, -1])
+    rf = np.linalg.norm(final_position)
 
     print(f"Difference in radius after propagating: {rf - r0}")
