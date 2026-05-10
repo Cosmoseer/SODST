@@ -6,7 +6,7 @@ The Orbit Visualiser is a 3D Keplerian orbit visualisation tool for modelling th
 
 ## Features
 
-Orbits are modelled and visualised in the Earth Centred Equatorial (ECI) frame, with the orbital geometry parametrised using:
+Orbits are modelled and visualised in the Earth Centred Inertial (ECI) frame, with the orbital geometry parametrised using:
   - Eccentricity
   - Radius of periapsis
   - Right ascension of the ascending node
@@ -153,7 +153,7 @@ if __name__ == "__main__":
 
     print(f"Difference in radius after propagating: {rf - r0}")
 ```
-The orbit propagation function takes the Orbit object and propagation end time (the start time is always 0, and begins the propagation at the true anomaly (nu) set in the constructor Orbit.from_orbital_elements). The values set in the code snippet above result in the propagation of a circular orbit of radius 50,000km, starting at the perifocal position (50000, 0, 0) lasting for one orbital period. For non-circular orbits nu = 0.0 is periapsis. The true anomaly is in radians, so nu = pi is apoapsis.
+The orbit propagation function takes the Orbit object and propagation end time (the start time is always 0, and begins the propagation at the true anomaly (nu) set in the constructor Orbit.from_orbital_elements). The values set in the code snippet above result in the propagation of a circular orbit of radius 50,000km, starting at the position (50000, 0, 0) lasting for one orbital period. For non-circular orbits nu = 0.0 is periapsis. The true anomaly is in radians, so nu = pi is apoapsis.
 
 In order to get accurate results you should keep the end time on the order of 10 or at most 100 periods. The integrators used by scipy aren't symplectic, so there is significant energy drift over longer propagations.
 
