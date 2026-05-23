@@ -47,17 +47,18 @@ class GeometryManager():
             root.resizable(False, False)
 
     @property
-    def parent_frame(self) -> tuple[FrameGeometry, FrameGeometry, FrameGeometry]:
+    def parent_frame(self) -> tuple[FrameGeometry, FrameGeometry, FrameGeometry, FrameGeometry]:
         """
-        The tuple of frame geometry of the 3 top level frames, input, figure and properties in that
+        The tuple of frame geometry of the 4 top level frames, input, determination, figure and properties in that
         order.
 
         Returns
         -------
-        tuple[FrameGeometry, FrameGeometry, FrameGeometry]
+        tuple[FrameGeometry, FrameGeometry, FrameGeometry, FrameGeometry]
             Tuple of parent frame FrameGeometry
         """
         return (
+            FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
             FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
             FrameGeometry(padx = 8, pady = 6),
             FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
