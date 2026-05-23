@@ -5,6 +5,7 @@ from typing import Callable
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
 from orbit_visualiser.ui.properties.properties_panel_builder import PropertiesBuilder
 from orbit_visualiser.ui.input.input_panel_builder import InputBuilder
+from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.geometry import GeometryManager, FrameGeometry
 
@@ -22,6 +23,7 @@ class UIBuilder():
         self._properties_frame = self._build_frame(props_geom)
 
         self._input_builder = InputBuilder(self._input_frame, oda, geo_manager)
+        self._determ_builder = DetermBuilder(self._determ_frame, oda, geo_manager)
         self._figure_builder = OrbitFigureBuilder(self._figure_frame, oda, geo_manager)
         self._properties_builder = PropertiesBuilder(self._properties_frame, oda)
 
@@ -45,6 +47,7 @@ class UIBuilder():
             format_value: Callable
     ) -> None:
         self._input_builder.build(reset, validate_input, slider_changed)
+        self._determ_builder.build()
         self._figure_builder.build()
         self._properties_builder.build(format_value)
 
