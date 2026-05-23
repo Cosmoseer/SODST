@@ -45,7 +45,7 @@ class UIBuilder():
             format_value: Callable
     ) -> None:
         self._input_builder.build_input_frame(reset, validate_input, slider_changed)
-        self._figure_builder.build()
+        self._figure_builder.build_figure_frame()
         self._properties_builder.build_properties_frame(format_value)
 
     def _build_frame(self, frame_geom: FrameGeometry, scrollable: bool = True) -> Frame | ScrolledFrame:

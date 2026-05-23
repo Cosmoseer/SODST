@@ -63,7 +63,7 @@ class OrbitFigureBuilder():
     def axis(self) -> Axes3D:
         return self._ax
 
-    def build(self) -> None:
+    def build_figure_frame(self) -> None:
         self._create_figure()
         self._configure_axes()
         self._configure_figure_parameters()
