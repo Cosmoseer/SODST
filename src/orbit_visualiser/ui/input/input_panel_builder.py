@@ -151,7 +151,7 @@ class InputBuilder(Builder):
     def omega_entry(self) -> Entry:
         return self._omega_entry
 
-    def build_input_frame(
+    def build(
             self,
             reset: Callable,
             validate_input: Callable,

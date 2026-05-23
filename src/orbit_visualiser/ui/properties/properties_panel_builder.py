@@ -59,7 +59,7 @@ class PropertiesBuilder(Builder):
     def property_specs(self) -> dict[str, PropertySpec]:
         return self._property_specs
 
-    def build_properties_frame(self, format_value: Callable) -> None:
+    def build(self, format_value: Callable) -> None:
         self._build_separator(self._properties_frame, "Properties")
         orbital_props_frame = LabelFrame(
             self._properties_frame, bd = 1, relief = "sunken", text = "Orbit",
