@@ -15,8 +15,9 @@ class UIBuilder():
         self._oda = oda
         self._geo_manager = geo_manager
 
-        input_geom, figure_geom, props_geom = geo_manager.parent_frame
+        input_geom, figure_geom, determ_geom, props_geom = geo_manager.parent_frame
         self._input_frame = self._build_frame(input_geom)
+        self._determ_frame = self._build_frame(determ_geom)
         self._figure_frame = self._build_frame(figure_geom, scrollable = False)
         self._properties_frame = self._build_frame(props_geom)
 
