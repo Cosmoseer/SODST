@@ -221,7 +221,7 @@ class InputBuilder(Builder):
             root: Frame,
             variable: str,
             spec: VariableSpec,
-            geometry: tuple[FrameGeometry, SliderGeometry, EntryGeometry ],
+            geometry: tuple[FrameGeometry, SliderGeometry, EntryGeometry],
             validate_input: Callable,
             slider_changed: Callable
     ) -> tuple[Scale, Entry]:
