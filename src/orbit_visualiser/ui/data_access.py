@@ -38,6 +38,7 @@ class OrbitDataAccess():
                                                     orb.argument_of_periapsis)
         return np.matmul(eci_trans, pf_pos_data)
 
+    # TODO: Write code for perifocal reference frame input
     def get_sat_position(self, ref_frame: Literal["eci", "perifocal"] = "eci") -> NDArray[np.float64]:
         if ref_frame == "perifocal":
             pass
