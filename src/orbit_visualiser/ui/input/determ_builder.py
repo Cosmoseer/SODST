@@ -15,6 +15,18 @@ class DetermBuilder(Builder):
         self._oda = oda
         self._geo_manager = geo_manager
 
+    @property
+    def first_pos_entries(self) -> tuple[Entry]:
+        return self._first_x_entry, self._first_y_entry, self._first_z_entry
+
+    @property
+    def second_pos_entries(self) -> tuple[Entry]:
+        return self._second_x_entry, self._second_y_entry, self._second_z_entry
+
+    @property
+    def third_pos_entries(self) -> tuple[Entry]:
+        return self._third_x_entry, self._third_y_entry, self._third_z_entry
+
     def build(self) -> None:
         det_frame = Frame(self._determ_frame)
         self._build_separator(det_frame, "Determination")
