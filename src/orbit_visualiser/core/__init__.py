@@ -1,7 +1,6 @@
 from .orbit import Orbit, CentralBody
 from .satellite import Satellite
 from .propagation import get_init_conditions_from_orbit, run_orbit_prop
-
 from .astrodynamics.types import OrbitType, OrbitMotion
 from .astrodynamics.keplerian.classification import orbit_type, orbit_motion_type
 from .astrodynamics.keplerian.anomalies import mean_anomaly, eccentric_anomaly
@@ -19,3 +18,4 @@ from .astrodynamics.keplerian.state import (perifocal_position, perifocal_veloci
                                             speed, radius_from_state, radius_from_orbit_eq, escape_speed,
                                             flight_angle, time_since_periapsis)
 from .astrodynamics.transformations import eci_to_perifocal_trans_mat, perifocal_to_eci_trans_mat
+from .astrodynamics.determination.gibbs import gibbs_orbit_determination
