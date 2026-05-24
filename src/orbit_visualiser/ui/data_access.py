@@ -1,8 +1,9 @@
-from typing import Literal
+from typing import Literal, Callable
 import numpy as np
 from numpy.typing import NDArray
 from math import pi
-from orbit_visualiser.core import Satellite, OrbitType, perifocal_position, perifocal_to_eci_trans_mat
+from orbit_visualiser.core import (Satellite, OrbitType, perifocal_position, perifocal_to_eci_trans_mat,
+                                   gibbs_orbit_determination)
 
 # TODO: Write docstrings
 class OrbitDataAccess():
