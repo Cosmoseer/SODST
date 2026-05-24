@@ -38,7 +38,7 @@ class DetermBuilder(Builder):
             root, bd = 2, relief = "sunken", text = f"{pos.title()} position", font = self._subtitle_font
         )
         for entry in self._pos_input(pos_frame):
-            setattr(self, f"{pos}_{entry[1]}_entry", entry[0])
+            setattr(self, f"_{pos}_{entry[1]}_entry", entry[0])
 
         pos_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
