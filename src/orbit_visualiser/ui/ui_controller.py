@@ -1,6 +1,6 @@
 from tkinter import Event
 from typing import Callable
-from orbit_visualiser.ui.input.input_panel_controller import InputController
+from orbit_visualiser.ui.input.variables_controller import VariablesController
 from orbit_visualiser.ui.properties.properties_panel_controller import PropertiesController
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
 #from orbit_visualiser.ui.config.display_panel.display_panel_controller import DisplayController
@@ -19,7 +19,7 @@ class UIController():
         self._builder = builder
 
         self._figure_controller = OrbitFigureController(builder.figure_builder, oda)
-        self._variables_controller = InputController(self._figure_controller, builder.input_builder, oda)
+        self._variables_controller = VariablesController(self._figure_controller, builder.input_builder, oda)
         self._properties_controller = PropertiesController(builder.properties_builder, oda)
 
 

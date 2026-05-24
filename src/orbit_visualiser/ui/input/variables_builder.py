@@ -1,95 +1,20 @@
 from tkinter import Frame, Scale, LabelFrame, Button, Entry, DoubleVar, Label
 from typing import Callable
 from functools import partial
-import numpy as np
-from orbit_visualiser.ui.common.builder import Builder
+from orbit_visualiser.ui.common.builder import InputBuilder
 from orbit_visualiser.ui.common.specs import VariableSpec
-from orbit_visualiser.ui.common.presets import initial_config
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.geometry import (GeometryManager, FrameGeometry, EntryGeometry,
                                                  SliderGeometry)
 
 
-class InputBuilder(Builder):
+class VariablesBuilder(InputBuilder):
 
     def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
         self._input_frame = input_frame
         self._oda = oda
         self._geo_manager = geo_manager
 
-        self._e_specs: VariableSpec = VariableSpec(
-            "Eccentricity",
-            None,
-            lambda sat: sat.orbit.eccentricity,
-            initial_config.eccentricity,
-            (0, 5),
-            3,
-            "normal"
-        )
-        self._rp_specs: VariableSpec = VariableSpec(
-            "Radius of periapsis",
-            "km",
-            lambda sat: sat.orbit.radius_of_periapsis,
-            initial_config.radius_of_periapsis,
-            (initial_config.radius + 1, 200_000),
-            0,
-            "normal"
-        )
-        self._mu_specs: VariableSpec = VariableSpec(
-            "Gravitational parameter",
-            "km³/s²",
-            lambda sat: sat.central_body.mu,
-            initial_config.gravitational_parameter,
-            (1, 1_000_000),
-            0,
-            "normal"
-        )
-        self._nu_specs: VariableSpec = VariableSpec(
-            "True anomaly",
-            "°",
-            lambda sat: np.degrees(sat.true_anomaly),
-            np.degrees(initial_config.true_anomaly),
-            (0, 360),
-            2,
-            "normal"
-        )
-        self._raan_specs: VariableSpec = VariableSpec(
-            "Right ascension of the ascending node",
-            "°",
-            lambda sat: np.degrees(sat.orbit.right_ascen_of_ascend_node),
-            np.degrees(initial_config.right_ascension_of_the_ascending_node),
-            (0, 360),
-            2,
-            "disabled"
-        )
-        self._i_specs: VariableSpec = VariableSpec(
-            "Inclination",
-            "°",
-            lambda sat: np.degrees(sat.orbit.inclination),
-            np.degrees(initial_config.inclination),
-            (0, 180),
-            2,
-            "normal"
-        )
-        self._omega_specs: VariableSpec = VariableSpec(
-            "Argument of periapsis",
-            "°",
-            lambda sat: np.degrees(sat.orbit.argument_of_periapsis),
-            np.degrees(initial_config.argument_of_periapsis),
-            (0, 360),
-            2,
-            "disabled"
-        )
-
-        self._variable_specs: dict[str, VariableSpec] = {
-            "e" : self._e_specs,
-            "rp" : self._rp_specs,
-            "nu" : self._nu_specs,
-            "raan" : self._raan_specs,
-            "i" : self._i_specs,
-            "omega" : self._omega_specs,
-            "mu" : self._mu_specs
-        }
 
     @property
     def variable_specs(self) -> dict[str, VariableSpec]:

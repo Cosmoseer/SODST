@@ -2,7 +2,7 @@ from tkinter import Entry, Event, messagebox, DoubleVar
 from decimal import Decimal
 import numpy as np
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
-from orbit_visualiser.ui.input.input_panel_builder import  InputBuilder
+from orbit_visualiser.ui.input.variables_builder import  VariablesBuilder
 from orbit_visualiser.core import Orbit, Satellite, asymptote_anomaly
 from orbit_visualiser.ui.common.utils import floor_float
 from orbit_visualiser.ui.data_access import OrbitDataAccess
@@ -12,13 +12,13 @@ from orbit_visualiser.ui.data_access import OrbitDataAccess
 # TODO: Remove any leading 0s from manual inputs.
 # TODO: Refactor to a lazy/cached recalculation model. Currently everything is recalculated on every variable change.
 
-class InputController():
+class VariablesController():
 
 
     def __init__(
             self,
             figure_cont: OrbitFigureController,
-            builder: InputBuilder,
+            builder: VariablesBuilder,
             oda: OrbitDataAccess
     ):
         self._orbit_fig_cont = figure_cont
