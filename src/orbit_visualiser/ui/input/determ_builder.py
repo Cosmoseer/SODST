@@ -7,7 +7,7 @@ from orbit_visualiser.ui.common.geometry import GeometryManager
 # TODO: Write functions for building different algorithm frames but initialise Gibbs
 class DetermBuilder(Builder):
 
-    ALGORITHMS = ("Gibbs",)
+    ALGORITHMS = ("gibbs",)
     POS_COMPONENTS = ("x", "y", "z")
 
     def __init__(self, determ_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
@@ -19,9 +19,9 @@ class DetermBuilder(Builder):
         det_frame = Frame(self._determ_frame)
         self._build_separator(det_frame, "Determination")
 
-        alg_options = StringVar(value = self.ALGORITHMS[0])
+        alg_options = StringVar(value = self.ALGORITHMS[0].title())
 
-        menu = OptionMenu(det_frame, alg_options, *self.ALGORITHMS)
+        menu = OptionMenu(det_frame, alg_options, *tuple(map(str.title, self.ALGORITHMS)))
         menu.pack(side = "top", anchor = "nw", pady = (16, 0))
 
         self._pos_frame(det_frame, "first")
