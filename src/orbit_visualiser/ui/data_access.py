@@ -44,3 +44,11 @@ class OrbitDataAccess():
             pass
 
         return self._satellite.position
+
+    @staticmethod
+    def determination_algorithm(algorithm: Literal["gibbs"]) -> Callable:
+        match algorithm:
+            case "gibbs":
+                return gibbs_orbit_determination
+
+        raise ValueError(f"Unknown determination algorithm: {algorithm}")
