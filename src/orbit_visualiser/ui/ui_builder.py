@@ -18,7 +18,7 @@ class UIBuilder():
 
         input_geom, determ_geom, figure_geom, props_geom = geo_manager.parent_frame
         self._input_frame = self._build_frame(input_geom)
-        self._determ_frame = self._build_frame(determ_geom)
+        self._determ_frame = self._build_frame(determ_geom, determ_frame = True)
         self._figure_frame = self._build_frame(figure_geom, scrollable = False)
         self._properties_frame = self._build_frame(props_geom)
 
@@ -51,8 +51,8 @@ class UIBuilder():
         self._figure_builder.build()
         self._properties_builder.build(format_value)
 
-    def _build_frame(self, frame_geom: FrameGeometry, scrollable: bool = True) -> Frame | ScrolledFrame:
-        scroll_frame_geom = self._geo_manager.parent_scrollable
+    def _build_frame(self, frame_geom: FrameGeometry, scrollable: bool = True, determ_frame: bool = False) -> Frame | ScrolledFrame:
+        scroll_frame_geom = self._geo_manager.parent_scrollable(determ_frame)
         frame = (ScrolledFrame(self._root, width = scroll_frame_geom.width, autohide = True,
                                padding = scroll_frame_geom.padding)
                 if scrollable else Frame(self._root, bd = 1))

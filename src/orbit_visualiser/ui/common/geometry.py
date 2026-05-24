@@ -64,10 +64,15 @@ class GeometryManager():
             FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
         )
 
-    @property
-    def parent_scrollable(self) -> ScrolledFrameGeometry:
+    def parent_scrollable(self, determ_frame: bool) -> ScrolledFrameGeometry:
         """
         The geometry for the scrolled parent frames (input and properties)
+
+        Parameters
+        ----------
+        determ_frame : bool
+            Boolean for whether the scrollable frame geometry being grabbed is for the determination
+            frame
 
         Returns
         -------
@@ -77,7 +82,7 @@ class GeometryManager():
         if self._os_win:
             return ScrolledFrameGeometry(width = 375, padding = 10)
 
-        return ScrolledFrameGeometry(width = 315)
+        return ScrolledFrameGeometry(width = 335) if determ_frame else ScrolledFrameGeometry(width = 315)
 
     @property
     def input_widgets(self) -> tuple[FrameGeometry, SliderGeometry, EntryGeometry]:
