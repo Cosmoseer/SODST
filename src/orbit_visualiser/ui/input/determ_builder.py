@@ -1,4 +1,4 @@
-from tkinter import Frame, StringVar, OptionMenu, LabelFrame, Entry, Label, Button
+from tkinter import Frame, StringVar, OptionMenu, LabelFrame, Entry, Label
 from typing import Literal
 from orbit_visualiser.ui.common.builder import InputBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
