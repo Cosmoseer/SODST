@@ -1,5 +1,12 @@
-from tkinter import Frame, Label
+import numpy as np
+from functools import partial
+from typing import Callable
+from tkinter import Frame, Label, Scale, Entry, DoubleVar, LabelFrame, Button
 from abc import ABC, abstractmethod
+from orbit_visualiser.ui.common.specs import VariableSpec
+from orbit_visualiser.ui.common.presets import initial_config
+from orbit_visualiser.ui.common.geometry import GeometryManager
+from orbit_visualiser.ui.data_access import OrbitDataAccess
 
 class Builder(ABC):
 
@@ -11,6 +18,14 @@ class Builder(ABC):
     def build(self):
         pass
 
+    def _build_input_frame():
+        pass
+
+    @staticmethod
+    def _build_button(root: Frame, button_txt: str, command: Callable | None) -> None:
+        button = Button(root, text = button_txt, command = command)
+        button.pack(side = "top", anchor = "nw", pady = (4, 0))
+
     def _build_separator(self, root: Frame, text: str) -> None:
         frame = Frame(root)
         frame.pack(side = "top", fill = "x", pady = 4)
@@ -20,6 +35,7 @@ class Builder(ABC):
 
 
 class InputBuilder(Builder):
+
     _e_specs: VariableSpec = VariableSpec(
             "Eccentricity",
             None,
@@ -84,12 +100,108 @@ class InputBuilder(Builder):
             "disabled"
         )
 
-    _variable_specs: dict[str, VariableSpec] = {
-            "e" : _e_specs,
-            "rp" : _rp_specs,
-            "nu" : _nu_specs,
-            "raan" : _raan_specs,
-            "i" : _i_specs,
-            "omega" : _omega_specs,
-            "mu" : _mu_specs
-        }
+    _orbit_specs: dict[str, VariableSpec] = {
+        "e" : _e_specs,
+        "rp" : _rp_specs,
+        "raan" : _raan_specs,
+        "i" : _i_specs,
+        "omega" : _omega_specs
+    }
+
+    _central_body_specs: dict[str, VariableSpec] = {
+        "mu" : _mu_specs
+    }
+
+    _satellite_specs: dict[str, VariableSpec] = {
+        "nu" : _nu_specs,
+    }
+
+    _variable_specs: dict[str, VariableSpec] = _orbit_specs | _central_body_specs | _satellite_specs
+
+    def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
+        self._input_frame = input_frame
+        self._oda = oda
+        self._input_geometry = geo_manager.input_widgets
+
+    def _build_input_label_frame(self, root: Frame, label: str) -> LabelFrame:
+        return LabelFrame(
+            root, bd = 2, relief = "sunken", text = label, font = self._subtitle_font
+        )
+
+    def _build_input_frame(
+            self,
+            root: Frame,
+            validate_input: Callable,
+            slider_changed: Callable,
+            specs: dict[str, VariableSpec]
+    ) -> None:
+        for variable, spec in specs.items():
+            slider, entry = self._build_input_widgets(
+                root, variable, spec, validate_input, slider_changed
+            )
+            setattr(self, f"_{variable}_slider", slider)
+            setattr(self, f"_{variable}_entry", entry)
+
+    def _build_input_widgets(self,
+            root: Frame,
+            variable: str,
+            spec: VariableSpec,
+            validate_input: Callable,
+            slider_changed: Callable
+    ) -> tuple[Scale, Entry]:
+        frame_geo = self._input_geometry[0]
+        frame = Frame(root, width = frame_geo.width, height = frame_geo.height, relief = "groove", bd = 1)
+
+        units = spec.units
+        label = Label(frame, text = f"{spec.label}{"" if units is None else f" ({units})"}:")
+        label.place(x = 5, y = 0)
+
+        slider = self._build_slider(
+            frame,
+            variable,
+            spec,
+            slider_changed
+        )
+
+        entry_geom = self._input_geometry[2]
+        entry = Entry(frame, width = entry_geom.width)
+        entry.insert(0, f"{spec.getter(self._oda.satellite): 0.{spec.decimal_places}f}".strip())
+        entry.configure(state = spec.init_state)
+        entry.bind("<Return>", partial(validate_input, variable))
+        entry.place(x = entry_geom.x, y = entry_geom.y)
+
+        frame.pack(side = frame_geo.side, anchor = frame_geo.anchor, pady = frame_geo.pady)
+
+        return slider, entry
+
+    def _build_slider(
+            self,
+            root: Frame,
+            variable: str,
+            spec: VariableSpec,
+            slider_changed: Callable
+    ) -> Scale:
+        slider_var: DoubleVar = DoubleVar()
+        self.__setattr__(f"{variable}_var", slider_var)
+
+        slider_name = f"_{variable}_slider"
+        lims = spec.slider_lims
+        self.__setattr__(
+            slider_name,
+            Scale(root, from_ = lims[0], to = lims[1], resolution = 1/10**spec.decimal_places, length = 275,
+                  orient = "horizontal", variable = slider_var,
+                  command = partial(slider_changed, variable, "slider"),
+                  tickinterval = 0, showvalue = 0,
+                  state = spec.init_state
+                  )
+        )
+
+        slider_var.set(spec.getter(self._oda.satellite))
+
+        slider: Scale = self.__getattribute__(slider_name)
+        geometry = self._input_geometry[1]
+        slider.place(x = geometry.x, y = geometry.y, anchor = "nw")
+        return slider
+
+class DisplayBuilder(Builder):
+    pass
