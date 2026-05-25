@@ -1,11 +1,11 @@
 from tkinter import Frame, StringVar, OptionMenu, LabelFrame, Entry, Label, Button
 from typing import Literal
-from orbit_visualiser.ui.common.builder import Builder
+from orbit_visualiser.ui.common.builder import InputBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.geometry import GeometryManager
 
 # TODO: Write functions for building different algorithm frames but initialise Gibbs
-class DetermBuilder(Builder):
+class DetermBuilder(InputBuilder):
 
     ALGORITHMS = ("gibbs",)
     POS_COMPONENTS = ("x", "y", "z")
