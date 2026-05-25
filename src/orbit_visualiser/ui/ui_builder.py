@@ -3,7 +3,7 @@ from ttkbootstrap import Window
 from ttkbootstrap.scrolled import ScrolledFrame
 from typing import Callable
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
-from orbit_visualiser.ui.properties.properties_panel_builder import PropertiesBuilder
+from orbit_visualiser.ui.properties.properties_builder import PropertiesBuilder
 from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
