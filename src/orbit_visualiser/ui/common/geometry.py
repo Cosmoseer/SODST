@@ -132,3 +132,23 @@ class GeometryManager():
             return (5, 5)
 
         return (7, 7)
+
+    @property
+    def pos_entries(self) -> list[tuple[PlaceableGeometry, EntryGeometry]]:
+        pos_entry_geometries: list[tuple[PlaceableGeometry, EntryGeometry]] = []
+        if self._os_win:
+            pass
+
+        label_x, entry_x = 5, 22
+        dist_to_next_entry = 100
+        y = 2.5
+        width = 8
+        for _ in range(3):
+            pos_entry_geometries.append((
+                PlaceableGeometry(x = label_x, y = y),
+                EntryGeometry(x = entry_x, y = y, width = width)
+            ))
+            label_x += dist_to_next_entry
+            entry_x += dist_to_next_entry
+
+        return pos_entry_geometries

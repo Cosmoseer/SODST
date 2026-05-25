@@ -82,18 +82,16 @@ class DetermBuilder(InputBuilder):
 
     def _pos_input(self, root: Frame) -> list[tuple[Entry, str]]:
         entry_frame = Frame(root, width = 310, height = 35)
-        entries: list[tuple[Entry, str]] = []
-        label_x, entry_x = 5, 22
 
-        for comp in self.POS_COMPONENTS:
-            label = Label(entry_frame, text = f"{comp}:")
-            label.place(x = label_x, y = 2.5)
-            entry = Entry(entry_frame, width = 8)
+        entries: list[tuple[Entry, str]] = []
+        pos_entries = self._geo_manager.pos_entries
+        for i, (label_geo, entry_geo) in enumerate(pos_entries):
+            label = Label(entry_frame, text = f"{self.POS_COMPONENTS[i]}:")
+            label.place(x = label_geo.x, y = label_geo.y)
+            entry = Entry(entry_frame, width = entry_geo.width)
             entry.insert(0, "")
-            entry.place(x = entry_x, y = 2.5)
-            entries.append((entry, comp))
-            label_x += 100
-            entry_x += 100
+            entry.place(x = entry_geo.x, y = entry_geo.y)
+            entries.append((self.POS_COMPONENTS[i], entry))
 
         entry_frame.pack(side = "top", anchor = "nw")
 
