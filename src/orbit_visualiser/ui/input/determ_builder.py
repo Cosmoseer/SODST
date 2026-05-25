@@ -80,7 +80,7 @@ class DetermBuilder(InputBuilder):
 
         pos_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
-    def _pos_input(self, root: Frame) -> list[tuple[Entry, str]]:
+    def _pos_input(self, root: LabelFrame) -> list[tuple[str, Entry]]:
         entry_frame = Frame(root, width = 310, height = 35)
 
         entries: list[tuple[Entry, str]] = []
