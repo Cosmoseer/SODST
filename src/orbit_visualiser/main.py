@@ -21,11 +21,11 @@ class OrbitVisualiser():
         orbit: Orbit = Orbit.from_orbital_elements(
             initial_config.eccentricity,
             initial_config.radius_of_periapsis,
-            initial_config.true_anomaly,
             initial_config.right_ascension_of_the_ascending_node,
             initial_config.inclination,
             initial_config.argument_of_periapsis,
-            initial_config.gravitational_parameter
+            initial_config.gravitational_parameter,
+            initial_config.true_anomaly,
         )
 
         central_body: CentralBody = CentralBody(

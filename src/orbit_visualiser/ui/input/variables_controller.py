@@ -106,11 +106,11 @@ class VariablesController():
         new_values = {
             "e": self._builder.e_var.get(),
             "rp": self._builder.rp_var.get(),
-            "nu": np.deg2rad(self._builder.nu_var.get()),
             "raan": np.deg2rad(self._builder.raan_var.get()),
             "i": np.deg2rad(self._builder.i_var.get()),
             "omega": np.deg2rad(self._builder.omega_var.get()),
             "mu": self._builder.mu_var.get(),
+            "nu": np.deg2rad(self._builder.nu_var.get())
         }
         new_values[variable] = new_val
 
@@ -126,9 +126,9 @@ class VariablesController():
         self._orbit_fig_cont.redraw_orbit()
         self._orbit_fig_cont.redraw_satellite()
 
-    def _update_satellite_state(self, e: float, rp: float, nu: float, raan: float,
-                                i: float, omega: float, mu: float) -> None:
-        orbit = Orbit.from_orbital_elements(e, rp, nu, raan, i, omega, mu)
+    def _update_satellite_state(self, e: float, rp: float, raan: float,
+                                i: float, omega: float, mu: float, nu: float) -> None:
+        orbit = Orbit.from_orbital_elements(e, rp, raan, i, omega, mu, nu)
         sat: Satellite = self._oda.satellite
         sat.position = orbit.position
         sat.velocity = orbit.velocity
