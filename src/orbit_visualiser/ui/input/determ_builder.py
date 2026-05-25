@@ -36,14 +36,40 @@ class DetermBuilder(InputBuilder):
         menu = OptionMenu(det_frame, alg_options, *tuple(map(str.title, self.ALGORITHMS)))
         menu.pack(side = "top", anchor = "nw", pady = (16, 0))
 
-        self._pos_frame(det_frame, "first")
-        self._pos_frame(det_frame, "second")
-        self._pos_frame(det_frame, "third")
+        self._build_state_frame(det_frame)
+        self._build_gibbs_frame(det_frame)
+        self._build_lambert_frame(det_frame)
+        self._build_range_angle_frame(det_frame)
+        self._build_angles_only_frame(det_frame)
+        self._build_gauss_frame(det_frame)
 
-        determ_button = Button(det_frame, text = "Determine orbit", command = None)
-        determ_button.pack(side = "top", anchor = "nw", pady = (4, 0))
+        # The gibbs frame is rendered by default
+        self._gibbs_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
+
+        self._build_button(det_frame, "Determine orbit", None)
 
         det_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
+
+    def _build_state_frame(self, root: Frame) -> None:
+        pass
+
+    def _build_gibbs_frame(self, root: Frame) -> None:
+        self._gibbs_frame = Frame(root)
+        positions = ("first", "second", "third")
+        for pos in positions:
+            self._pos_frame(self._gibbs_frame, pos)
+
+    def _build_lambert_frame(self, root: Frame) -> None:
+        pass
+
+    def _build_range_angle_frame(self, root: Frame) -> None:
+        pass
+
+    def _build_angles_only_frame(self, root: Frame) -> None:
+        pass
+
+    def _build_gauss_frame(self, root: Frame) -> None:
+        pass
 
     def _pos_frame(self, root: Frame, pos: Literal["first", "second", "third"]) -> None:
         pos_frame = LabelFrame(
