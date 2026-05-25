@@ -6,13 +6,14 @@ from orbit_visualiser.ui.input.variables_builder import  VariablesBuilder
 from orbit_visualiser.core import Orbit, Satellite, asymptote_anomaly
 from orbit_visualiser.ui.common.utils import floor_float
 from orbit_visualiser.ui.data_access import OrbitDataAccess
+from orbit_visualiser.ui.common.controller import Controller
 
 # TODO: Allow for temporary increase in slider scale when inputting manual values.
 # TODO: Allow for fractional manual inputs.
 # TODO: Remove any leading 0s from manual inputs.
 # TODO: Refactor to a lazy/cached recalculation model. Currently everything is recalculated on every variable change.
 
-class VariablesController():
+class VariablesController(Controller):
 
 
     def __init__(
@@ -51,15 +52,9 @@ class VariablesController():
             event: Event
     ) -> None:
         new_val = getattr(self._builder, f"{variable}_entry").get().strip()
+        new_val_float = self._numerical_validation(new_val, variable)
 
-        try:
-            new_val_float = float(new_val)
-
-            if new_val_float < 0 and variable != "nu":
-                raise ValueError
-
-        except ValueError:
-            messagebox.showwarning("Warning", "Invalid input")
+        if new_val_float is None:
             return
 
         # When e < 1 then the orbit is periodic, and so the true anomaly is as well.
