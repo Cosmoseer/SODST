@@ -1,8 +1,6 @@
 from tkinter import messagebox
 
-
 class Controller():
-
 
     def _numerical_validation(self, value: str, variable: str | None = None) -> float:
         try:
