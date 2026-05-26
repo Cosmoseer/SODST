@@ -14,11 +14,13 @@ class Builder(ABC):
     _subtitle_font = ("Orbitron", 13, "normal")
     _label_font = ("Fira Mono", 9, "normal")
 
+    def __init__(self, root: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
+        self._root = root
+        self._oda = oda
+        self._geo_manager = geo_manager
+
     @abstractmethod
     def build(self):
-        pass
-
-    def _build_input_frame():
         pass
 
     @staticmethod
@@ -119,9 +121,9 @@ class InputBuilder(Builder):
     _variable_specs: dict[str, VariableSpec] = _orbit_specs | _central_body_specs | _satellite_specs
 
     def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
-        self._input_frame = input_frame
-        self._oda = oda
-        self._input_geometry = geo_manager.input_widgets
+        super().__init__(input_frame, oda, geo_manager)
+
+        self._input_geometry = self._geo_manager.input_widgets
 
     def _build_input_label_frame(self, root: Frame, label: str) -> LabelFrame:
         return LabelFrame(

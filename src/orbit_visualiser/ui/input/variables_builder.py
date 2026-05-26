@@ -78,7 +78,7 @@ class VariablesBuilder(InputBuilder):
             validate_input: Callable,
             slider_changed: Callable
     ) -> None:
-        var_frame = Frame(self._input_frame)
+        var_frame = Frame(self._root)
         self._variables_frame = var_frame
 
         self._build_separator(var_frame, "Variables")
