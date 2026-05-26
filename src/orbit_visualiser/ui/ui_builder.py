@@ -1,15 +1,16 @@
 from tkinter import Frame
 from ttkbootstrap import Window
 from ttkbootstrap.scrolled import ScrolledFrame
-from typing import Callable
+from typing import Callable, Any
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
 from orbit_visualiser.ui.properties.properties_builder import PropertiesBuilder
 from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
+from orbit_visualiser.ui.common.builder import Builder
 from orbit_visualiser.ui.common.geometry import GeometryManager, FrameGeometry
 
-class UIBuilder():
+class UIBuilder(Builder):
 
     def __init__(self, root: Window, oda: OrbitDataAccess, geo_manager: GeometryManager):
         self._root = root
@@ -39,17 +40,13 @@ class UIBuilder():
     def properties_builder(self) -> PropertiesBuilder:
         return self._properties_builder
 
-    def build(
-            self,
-            reset: Callable,
-            validate_input: Callable,
-            slider_changed: Callable,
-            format_value: Callable
+    def build(self, callbacks: dict[str, Callable[[Any], Any]]
     ) -> None:
-        self._input_builder.build(reset, validate_input, slider_changed)
+        self._input_builder.build(callbacks["reset_state"], callbacks["validate_manual_input"],
+                                  callbacks["slider_changed"])
         self._determ_builder.build()
         self._figure_builder.build()
-        self._properties_builder.build(format_value)
+        self._properties_builder.build(callbacks["format_display_value"])
 
     def _build_frame(self, frame_geom: FrameGeometry, scrollable: bool = True, determ_frame: bool = False) -> Frame | ScrolledFrame:
         scroll_frame_geom = self._geo_manager.parent_scrollable(determ_frame)

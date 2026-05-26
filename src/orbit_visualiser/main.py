@@ -10,12 +10,7 @@ class OrbitVisualiser():
 
         builder = UIBuilder(root, oda, geo_manager)
         controller = UIController(builder, oda)
-        builder.build(
-            controller.reset_state,
-            controller.validate_manual_input,
-            controller.slider_changed,
-            controller.format_display_value
-        )
+        builder.build(controller.callbacks)
 
     def _initialise_orbit_objects(self) -> OrbitDataAccess:
         orbit: Orbit = Orbit.from_orbital_elements(
