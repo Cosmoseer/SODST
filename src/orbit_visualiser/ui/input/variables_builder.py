@@ -33,14 +33,6 @@ class VariablesBuilder(InputBuilder):
         return self._rp_entry
 
     @property
-    def mu_slider(self) -> Scale:
-        return self._mu_slider
-
-    @property
-    def mu_entry(self) -> Entry:
-        return self._mu_entry
-
-    @property
     def nu_slider(self) -> Scale:
         return self._nu_slider
 

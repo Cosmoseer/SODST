@@ -125,6 +125,14 @@ class InputBuilder(Builder):
 
         self._input_geometry = self._geo_manager.input_widgets
 
+    @property
+    def mu_slider(self) -> Scale:
+        return self._mu_slider
+
+    @property
+    def mu_entry(self) -> Entry:
+        return self._mu_entry
+
     def _build_input_label_frame(
             self,
             root: Frame,
