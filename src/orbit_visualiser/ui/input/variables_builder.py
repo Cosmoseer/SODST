@@ -75,7 +75,7 @@ class VariablesBuilder(InputBuilder):
     def build(
             self,
             reset: Callable,
-            validate_input: Callable,
+            input_changed: Callable,
             slider_changed: Callable
     ) -> None:
         var_frame = Frame(self._root)
