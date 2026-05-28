@@ -7,6 +7,8 @@ from orbit_visualiser.ui.common.controller import Controller
 #from orbit_visualiser.ui.config.display_panel.display_panel_controller import DisplayController
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.ui_builder import UIBuilder
+from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
+from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 
 class UIController(Controller):
 
@@ -28,13 +30,15 @@ class UIController(Controller):
     def callbacks(self) -> dict[str, Callable[[Any], Any]]:
         return self._callbacks
 
-    def validate_manual_input(
-            self,
-            variable: str,
-            event: Event
+    def manual_input_changed(
+            self, cls: VariablesBuilder | DetermBuilder, variable: str, event: Event
     ) -> None:
-        self._variables_controller.validate_manual_input(variable, event)
-        self._properties_controller.update_display()
+        if isinstance(cls, VariablesBuilder):
+            self._variables_controller.update_from_manual_input(variable)
+            self._properties_controller.update_display()
+
+        elif isinstance(cls, DetermBuilder):
+            pass
 
     def reset_state(self) -> Callable:
         return self._variables_controller.reset_state()
