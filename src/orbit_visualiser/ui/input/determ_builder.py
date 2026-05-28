@@ -11,9 +11,7 @@ class DetermBuilder(InputBuilder):
     POS_COMPONENTS = ("x", "y", "z")
 
     def __init__(self, determ_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
-        self._determ_frame = determ_frame
-        self._oda = oda
-        self._geo_manager = geo_manager
+        super().__init__(determ_frame, oda, geo_manager)
 
     @property
     def first_pos_entries(self) -> tuple[Entry, Entry, Entry]:
@@ -28,7 +26,7 @@ class DetermBuilder(InputBuilder):
         return self._third_x_entry, self._third_y_entry, self._third_z_entry
 
     def build(self) -> None:
-        det_frame = Frame(self._determ_frame)
+        det_frame = Frame(self._root)
         self._build_separator(det_frame, "Determination")
 
         alg_options = StringVar(value = self.ALGORITHMS[0].title())
