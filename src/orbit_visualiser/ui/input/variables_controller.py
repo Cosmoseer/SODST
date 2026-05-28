@@ -1,4 +1,4 @@
-from tkinter import Entry, Event, messagebox, DoubleVar
+from tkinter import Entry, messagebox, DoubleVar
 from decimal import Decimal
 import numpy as np
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
@@ -46,11 +46,7 @@ class VariablesController(Controller):
         self._orbit_fig_cont.redraw_satellite()
         self._orbit_fig_cont.reset_axes()
 
-    def validate_manual_input(
-            self,
-            variable: str,
-            event: Event
-    ) -> None:
+    def update_from_manual_input(self, variable: str) -> None:
         new_val = getattr(self._builder, f"{variable}_entry").get().strip()
         new_val_float = self._numerical_validation(new_val, variable)
 
