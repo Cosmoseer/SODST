@@ -20,7 +20,7 @@ class UIController(Controller):
         self._properties_controller = PropertiesController(builder.properties_builder, oda)
 
         self._callbacks: dict[str, Callable[[Any], Any]] = {
-                "validate_manual_input": self.validate_manual_input,
+                "manual_input_changed": self.manual_input_changed,
                 "reset_state": self.reset_state,
                 "format_display_value": self.format_display_value,
                 "slider_changed": self.slider_changed
