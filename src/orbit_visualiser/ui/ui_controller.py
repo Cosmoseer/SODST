@@ -3,6 +3,7 @@ from typing import Callable, Any
 from orbit_visualiser.ui.input.variables_controller import VariablesController
 from orbit_visualiser.ui.properties.properties_controller import PropertiesController
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
+from orbit_visualiser.ui.input.determ_controller import DetermController
 from orbit_visualiser.ui.common.controller import Controller
 #from orbit_visualiser.ui.config.display_panel.display_panel_controller import DisplayController
 from orbit_visualiser.ui.data_access import OrbitDataAccess
@@ -17,6 +18,7 @@ class UIController(Controller):
 
         self._figure_controller = OrbitFigureController(builder.figure_builder, oda)
         self._variables_controller = VariablesController(self._figure_controller, builder.input_builder, oda)
+        self._determ_controller = DetermController(builder.determ_builder, oda)
         self._properties_controller = PropertiesController(builder.properties_builder, oda)
 
         self._callbacks: dict[str, Callable[[Any], Any]] = {
@@ -38,7 +40,7 @@ class UIController(Controller):
             self._properties_controller.update_display()
 
         elif isinstance(cls, DetermBuilder):
-            pass
+            self._determ_controller.validate_determination_input(variable)
 
     def reset_state(self) -> Callable:
         return self._variables_controller.reset_state()
