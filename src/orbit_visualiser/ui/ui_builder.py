@@ -42,7 +42,7 @@ class UIBuilder(Builder):
 
     def build(self, callbacks: dict[str, Callable[[Any], Any]]
     ) -> None:
-        self._input_builder.build(callbacks["reset_state"], callbacks["validate_manual_input"],
+        self._input_builder.build(callbacks["reset_state"], callbacks["manual_input_changed"],
                                   callbacks["slider_changed"])
         self._determ_builder.build()
         self._figure_builder.build()
