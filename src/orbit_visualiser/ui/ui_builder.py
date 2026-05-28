@@ -40,11 +40,16 @@ class UIBuilder(Builder):
     def properties_builder(self) -> PropertiesBuilder:
         return self._properties_builder
 
+    @property
+    def determ_builder(self) -> DetermBuilder:
+        return self._determ_builder
+
     def build(self, callbacks: dict[str, Callable[[Any], Any]]
     ) -> None:
+        manual_input_changed = callbacks["manual_input_changed"]
         self._input_builder.build(callbacks["reset_state"], callbacks["manual_input_changed"],
                                   callbacks["slider_changed"])
-        self._determ_builder.build()
+        self._determ_builder.build(manual_input_changed)
         self._figure_builder.build()
         self._properties_builder.build(callbacks["format_display_value"])
 

@@ -1,5 +1,5 @@
 from tkinter import Frame, StringVar, OptionMenu, LabelFrame, Entry, Label
-from typing import Literal
+from typing import Literal, Callable, Any
 from orbit_visualiser.ui.common.builder import InputBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.geometry import GeometryManager
@@ -25,7 +25,7 @@ class DetermBuilder(InputBuilder):
     def third_pos_entries(self) -> tuple[Entry, Entry, Entry]:
         return self._third_x_entry, self._third_y_entry, self._third_z_entry
 
-    def build(self) -> None:
+    def build(self, input_changed: Callable[[Any], Any]) -> None:
         det_frame = Frame(self._root)
         self._build_separator(det_frame, "Determination")
 
@@ -45,7 +45,7 @@ class DetermBuilder(InputBuilder):
         self._gibbs_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
         # TODO: Have the input_sections dictionary as an attribute in InputBuilder parent class (see VariablesBuilder)
-        self._build_input_label_frame(det_frame, "Central body", lambda x: x, lambda x: x, {"mu": self._mu_specs})
+        self._build_input_label_frame(det_frame, "Central body", input_changed, lambda x: x, {"mu": self._mu_specs})
 
         self._build_button(det_frame, "Determine orbit", None)
 
