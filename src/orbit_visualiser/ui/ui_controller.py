@@ -46,12 +46,7 @@ class UIController(Controller):
     def format_display_value(self, value: float | str, units: str | None) -> str:
         return self._properties_controller.format_display_value(value, units)
 
-    def slider_changed(
-            self,
-            variable: str,
-            input_type: str,
-            new_val: str | float
-    ) -> None:
+    def slider_changed(self, variable: str, input_type: str, new_val: str | float) -> None:
         self._variables_controller.update_variable(
             variable,
             input_type,
