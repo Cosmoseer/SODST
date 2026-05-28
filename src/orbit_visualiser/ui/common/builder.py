@@ -1,6 +1,6 @@
 import numpy as np
 from functools import partial
-from typing import Callable
+from typing import Callable, Any
 from tkinter import Frame, Label, Scale, Entry, DoubleVar, LabelFrame, Button
 from abc import ABC, abstractmethod
 from orbit_visualiser.ui.common.specs import VariableSpec
@@ -140,13 +140,13 @@ class InputBuilder(Builder):
     def _build_input_frame(
             self,
             root: Frame,
-            validate_input: Callable,
-            slider_changed: Callable,
+            input_changed: Callable[[Any], Any],
+            slider_changed: Callable[[Any], Any],
             specs: dict[str, VariableSpec]
     ) -> None:
         for variable, spec in specs.items():
             slider, entry = self._build_input_widgets(
-                root, variable, spec, validate_input, slider_changed
+                root, variable, spec, input_changed, slider_changed
             )
             setattr(self, f"_{variable}_slider", slider)
             setattr(self, f"_{variable}_entry", entry)
@@ -155,8 +155,8 @@ class InputBuilder(Builder):
             root: Frame,
             variable: str,
             spec: VariableSpec,
-            validate_input: Callable,
-            slider_changed: Callable
+            input_changed: Callable[[Any], Any],
+            slider_changed: Callable[[Any], Any]
     ) -> tuple[Scale, Entry]:
         frame_geo = self._input_geometry[0]
         frame = Frame(root, width = frame_geo.width, height = frame_geo.height, relief = "groove", bd = 1)
@@ -176,7 +176,7 @@ class InputBuilder(Builder):
         entry = Entry(frame, width = entry_geom.width)
         entry.insert(0, f"{spec.getter(self._oda.satellite): 0.{spec.decimal_places}f}".strip())
         entry.configure(state = spec.init_state)
-        entry.bind("<Return>", partial(validate_input, variable))
+        entry.bind("<Return>", partial(input_changed, self, variable))
         entry.place(x = entry_geom.x, y = entry_geom.y)
 
         frame.pack(side = frame_geo.side, anchor = frame_geo.anchor, pady = frame_geo.pady)
@@ -188,7 +188,7 @@ class InputBuilder(Builder):
             root: Frame,
             variable: str,
             spec: VariableSpec,
-            slider_changed: Callable
+            slider_changed: Callable[[Any], Any]
     ) -> Scale:
         slider_var: DoubleVar = DoubleVar()
         self.__setattr__(f"{variable}_var", slider_var)
