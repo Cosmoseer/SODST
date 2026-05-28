@@ -1,5 +1,5 @@
 from tkinter import Frame, Scale, Entry
-from typing import Callable
+from typing import Callable, Any
 from orbit_visualiser.ui.common.builder import InputBuilder
 from orbit_visualiser.ui.common.specs import VariableSpec
 from orbit_visualiser.ui.data_access import OrbitDataAccess
@@ -74,9 +74,9 @@ class VariablesBuilder(InputBuilder):
 
     def build(
             self,
-            reset: Callable,
-            input_changed: Callable,
-            slider_changed: Callable
+            reset: Callable[[Any], Any],
+            input_changed: Callable[[Any], Any],
+            slider_changed: Callable[[Any], Any]
     ) -> None:
         var_frame = Frame(self._root)
         self._variables_frame = var_frame
