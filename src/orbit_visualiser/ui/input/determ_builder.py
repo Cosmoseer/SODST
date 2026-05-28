@@ -44,6 +44,9 @@ class DetermBuilder(InputBuilder):
         # The gibbs frame is rendered by default
         self._gibbs_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
+        # TODO: Have the input_sections dictionary as an attribute in InputBuilder parent class (see VariablesBuilder)
+        self._build_input_label_frame(det_frame, "Central body", lambda x: x, lambda x: x, {"mu": self._mu_specs})
+
         self._build_button(det_frame, "Determine orbit", None)
 
         det_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
