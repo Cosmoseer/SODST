@@ -125,10 +125,17 @@ class InputBuilder(Builder):
 
         self._input_geometry = self._geo_manager.input_widgets
 
-    def _build_input_label_frame(self, root: Frame, label: str) -> LabelFrame:
-        return LabelFrame(
-            root, bd = 2, relief = "sunken", text = label, font = self._subtitle_font
-        )
+    def _build_input_label_frame(
+            self,
+            root: Frame,
+            label: str,
+            input_changed: Callable[[Any], Any],
+            slider_changed: Callable[[Any], Any],
+            specs: dict[str, VariableSpec]
+    ) -> None:
+        frame = LabelFrame(root, bd = 2, relief = "sunken", text = label, font = self._subtitle_font)
+        self._build_input_frame(frame, input_changed, slider_changed, specs)
+        frame.pack(side = "top", anchor = "nw", pady = (4, 0))
 
     def _build_input_frame(
             self,

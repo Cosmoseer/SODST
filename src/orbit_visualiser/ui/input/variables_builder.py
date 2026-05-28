@@ -90,9 +90,7 @@ class VariablesBuilder(InputBuilder):
         }
 
         for section, specs in input_sections.items():
-            frame = self._build_input_label_frame(var_frame, section)
-            self._build_input_frame(frame, validate_input, slider_changed, specs)
-            frame.pack(side = "top", anchor = "nw", pady = (4, 0))
+            self._build_input_label_frame(var_frame, section, input_changed, slider_changed, specs)
 
         self._build_button(var_frame, "Reset", reset)
 
