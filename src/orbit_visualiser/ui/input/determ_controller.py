@@ -11,7 +11,9 @@ class DetermController(Controller):
     def __init__(self, builder: DetermBuilder, oda: OrbitDataAccess):
         super().__init__(builder, oda)
 
-    def determine_orbit(self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]):
+    def determine_orbit(
+            self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]
+    ) -> None:
         determination_alg: Callable = self._oda.determination_algorithm(algorithm)
 
         match algorithm:
