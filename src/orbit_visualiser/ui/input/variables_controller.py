@@ -45,10 +45,10 @@ class VariablesController(Controller):
         self._orbit_fig_cont.reset_axes()
 
     def update_from_manual_input(self, variable: str) -> None:
-        new_val = getattr(self._builder, f"{variable}_entry").get().strip()
-        new_val_float = self._numerical_validation(variable)
-
-        if new_val_float is None:
+        try:
+            new_val_float, new_val_str = self._numerical_validation(variable)
+        except ValueError:
+            self._invalid_input_message()
             return
 
         # When e < 1 then the orbit is periodic, and so the true anomaly is as well.
@@ -58,7 +58,7 @@ class VariablesController(Controller):
                 # absolute value (around 16 digits due to limitations of 64bit double precision
                 # for python floats). The Decimal class retains that information. If the angle is
                 # negative then Decimal(new_val)%360 reduces it to (-360, 0), then + 360 to the range we want.
-                new_val_float = (Decimal(new_val)%360 + 360)%360
+                new_val_float = (Decimal(new_val_str)%360 + 360)%360
                 self._set_entry(getattr(self._builder, f"{variable}_entry"),
                                 f"{new_val_float: 0.{self._builder.variable_specs[variable].decimal_places}f}".strip()
                             )

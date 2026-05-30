@@ -14,15 +14,15 @@ class Controller():
         self._builder = builder
         self._oda = oda
 
-    def _numerical_validation(self, variable: str | None = None) -> float:
-        value = getattr(self._builder, f"{variable}_entry").get().strip()
-        try:
-            new_val_float = float(value)
+    def _numerical_validation(self, variable: str | None = None) -> tuple[float, str]:
+        new_val_str = getattr(self._builder, f"{variable}_entry").get().strip()
 
-            if new_val_float < 0 and variable != "nu":
-                raise ValueError
+        new_val_float = float(new_val_str)
 
-            return new_val_float
+        if new_val_float < 0 and variable != "nu":
+            raise ValueError
+
+        return new_val_float, new_val_str
 
     @staticmethod
     def _invalid_input_message() -> None:

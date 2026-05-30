@@ -25,4 +25,8 @@ class DetermController(Controller):
         pass
 
     def validate_determination_input(self, variable: str):
-        self._numerical_validation(variable)
+        try:
+            self._numerical_validation(variable)
+        except ValueError:
+            self._invalid_input_message()
+            return
