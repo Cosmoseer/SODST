@@ -1,5 +1,5 @@
 from tkinter import Event
-from typing import Callable, Any
+from typing import Callable, Any, Literal
 from orbit_visualiser.ui.input.variables_controller import VariablesController
 from orbit_visualiser.ui.properties.properties_controller import PropertiesController
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
@@ -25,7 +25,8 @@ class UIController(Controller):
                 "manual_input_changed": self.manual_input_changed,
                 "reset_state": self.reset_state,
                 "format_display_value": self.format_display_value,
-                "slider_changed": self.slider_changed
+                "slider_changed": self.slider_changed,
+                "determine_orbit": self.determine_orbit
             }
 
     @property
@@ -55,3 +56,8 @@ class UIController(Controller):
             new_val
         )
         self._properties_controller.update_display()
+
+    def determine_orbit(
+            self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]
+    ) -> None:
+        self._determ_controller.determine_orbit(algorithm)
