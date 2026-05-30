@@ -2,29 +2,25 @@ from mpl_toolkits.mplot3d.art3d import Line3D
 from mpl_toolkits.mplot3d import Axes3D
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
+from orbit_visualiser.ui.common.controller import Controller
 
 # TODO: Fix bug where scroll zoom doesn't register as changing the view so the native matplotlib home button has unexpected (and often undesirable) behaviour.
-class OrbitFigureController():
+class OrbitFigureController(Controller):
 
     DISPLAY_TEXT_OFFSET = (1.5, 1.5)
     NUM_POINTS = 100_000
 
-    def __init__(
-            self,
-            builder: OrbitFigureBuilder,
-            oda: OrbitDataAccess
-    ):
-        self._builder = builder
-        self._da = oda
+    def __init__(self, builder: OrbitFigureBuilder, oda: OrbitDataAccess):
+        super().__init__(builder, oda)
 
     def redraw_orbit(self) -> None:
-        x, y, z = self._da.get_orbit_data(OrbitFigureController.NUM_POINTS)
+        x, y, z = self._oda.get_orbit_data(OrbitFigureController.NUM_POINTS)
         self._builder.line.set_data_3d(x, y, z)
 
         self._builder.canvas.draw_idle()
 
     def redraw_satellite(self) -> None:
-        x, y, z = self._da.get_sat_position()
+        x, y, z = self._oda.get_sat_position()
 
         sat_point: Line3D = self._builder.satellite_point
         sat_point.set_xdata((x,))
@@ -44,7 +40,7 @@ class OrbitFigureController():
     def plot_periapsis_point(self) -> None:
         axis: Axes3D = self._builder.axis
         self._rp_point, = axis.plot(
-            self._da.satellite.orbit.radius_of_periapsis,
+            self._oda.satellite.orbit.radius_of_periapsis,
             0,
             ms = 3,
             marker = "o",
@@ -54,7 +50,7 @@ class OrbitFigureController():
         )
         self._rp_annotation = axis.annotate(
             "$r_p$",
-            xy = (self._da.satellite.orbit.radius_of_periapsis, 0),
+            xy = (self._oda.satellite.orbit.radius_of_periapsis, 0),
             xycoords = "data",
             xytext = OrbitFigureController.DISPLAY_TEXT_OFFSET,
             textcoords = "offset points"

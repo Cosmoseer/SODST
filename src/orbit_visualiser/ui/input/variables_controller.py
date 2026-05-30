@@ -18,14 +18,12 @@ class VariablesController(Controller):
 
     def __init__(
             self,
-            figure_cont: OrbitFigureController,
             builder: VariablesBuilder,
-            oda: OrbitDataAccess
+            oda: OrbitDataAccess,
+            figure_cont: OrbitFigureController,
     ):
+        super().__init__(builder, oda)
         self._orbit_fig_cont = figure_cont
-        self._builder = builder
-
-        self._oda = oda
 
     def reset_state(self) -> None:
         init_values = []
@@ -48,7 +46,7 @@ class VariablesController(Controller):
 
     def update_from_manual_input(self, variable: str) -> None:
         new_val = getattr(self._builder, f"{variable}_entry").get().strip()
-        new_val_float = self._numerical_validation(new_val, variable)
+        new_val_float = self._numerical_validation(variable)
 
         if new_val_float is None:
             return

@@ -9,8 +9,7 @@ from orbit_visualiser.ui.common.controller import Controller
 class DetermController(Controller):
 
     def __init__(self, builder: DetermBuilder, oda: OrbitDataAccess):
-        self._builder = builder
-        self._oda = oda
+        super().__init__(builder, oda)
 
     def determine_orbit(self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]):
         determination_alg: Callable = self._oda.determination_algorithm(algorithm)
