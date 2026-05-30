@@ -24,7 +24,7 @@ class Builder(ABC):
         pass
 
     @staticmethod
-    def _build_button(root: Frame, button_txt: str, command: Callable | None) -> None:
+    def _build_button(root: Frame, button_txt: str, command: Callable[[Any], Any] | None) -> None:
         button = Button(root, text = button_txt, command = command)
         button.pack(side = "top", anchor = "nw", pady = (4, 0))
 
