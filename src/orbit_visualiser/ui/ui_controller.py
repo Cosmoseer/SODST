@@ -14,10 +14,10 @@ from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 class UIController(Controller):
 
     def __init__(self, builder: UIBuilder, oda: OrbitDataAccess):
-        self._builder = builder
+        super().__init__(builder, oda)
 
         self._figure_controller = OrbitFigureController(builder.figure_builder, oda)
-        self._variables_controller = VariablesController(self._figure_controller, builder.input_builder, oda)
+        self._variables_controller = VariablesController(builder.input_builder, oda, self._figure_controller)
         self._determ_controller = DetermController(builder.determ_builder, oda)
         self._properties_controller = PropertiesController(builder.properties_builder, oda)
 
