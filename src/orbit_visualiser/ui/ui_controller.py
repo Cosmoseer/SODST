@@ -42,7 +42,7 @@ class UIController(Controller):
         elif isinstance(cls, DetermBuilder):
             self._determ_controller.validate_determination_input(variable)
 
-    def reset_state(self) -> Callable:
+    def reset_state(self) -> None:
         return self._variables_controller.reset_state()
 
     def format_display_value(self, value: float | str, units: str | None) -> str:
