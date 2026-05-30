@@ -24,6 +24,6 @@ class Controller():
 
             return new_val_float
 
-        except ValueError:
-            messagebox.showwarning("Warning", "Invalid input")
-            return
+    @staticmethod
+    def _invalid_input_message() -> None:
+        messagebox.showwarning("Warning", "Invalid input")
