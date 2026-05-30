@@ -25,5 +25,4 @@ class DetermController(Controller):
         pass
 
     def validate_determination_input(self, variable: str):
-        new_val = getattr(self._builder, f"{variable}_entry").get().strip()
-        self._numerical_validation(new_val, variable)
+        self._numerical_validation(variable)
