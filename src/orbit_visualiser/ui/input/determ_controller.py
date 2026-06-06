@@ -15,6 +15,11 @@ class DetermController(Controller):
             self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]
     ) -> None:
         determination_alg: Callable = self._oda.determination_algorithm(algorithm)
+        try:
+            mu = self._numerical_validation(new_val = self._builder.mu_entry.get())[0]
+        except ValueError:
+            self._invalid_input_message()
+            return
 
         match algorithm:
             case "gibbs":
