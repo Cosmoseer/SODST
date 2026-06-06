@@ -79,15 +79,7 @@ class VariablesController(Controller):
     ) -> None:
         new_val = float(new_val)
 
-        # This if-elif block lets the sliders and manual inputs update one another.
-        if input_type == "slider":
-            self._set_entry(getattr(self._builder, f"{variable}_entry"),
-                              f"{new_val: 0.{self._builder.variable_specs[variable].decimal_places}f}".strip()
-                            )
-
-        elif input_type == "entry":
-            slider_var: DoubleVar = getattr(self._builder, f"{variable}_var")
-            slider_var.set(new_val)
+        self._slider_entry_interaction(input_type, variable, new_val)
 
         if variable in ["nu", "raan", "i", "omega"]:
             new_val = np.deg2rad(float(new_val))
@@ -168,10 +160,3 @@ class VariablesController(Controller):
         else:
             self._builder.raan_entry.configure(state = "normal")
             self._builder.raan_slider.configure(state = "normal")
-
-    def _set_entry(self, entry: Entry, new_entry_str: str) -> None:
-        entry.delete(0, 1000)
-        entry.insert(
-                0,
-                new_entry_str
-        )

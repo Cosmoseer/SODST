@@ -26,4 +26,21 @@ class Controller():
 
     @staticmethod
     def _invalid_input_message() -> None:
-        messagebox.showwarning("Warning", "Invalid input")
+        messagebox.showwarning("Warning", "Invalid inputs")
+
+    def _slider_entry_interaction(self, input_type: str, variable: str, new_val: str) -> None:
+        if input_type == "slider":
+            self._set_entry(getattr(self._builder, f"{variable}_entry"),
+                              f"{new_val: 0.{self._builder.variable_specs[variable].decimal_places}f}".strip()
+                            )
+
+        elif input_type == "entry":
+            slider_var: DoubleVar = getattr(self._builder, f"{variable}_var")
+            slider_var.set(new_val)
+
+    def _set_entry(self, entry: Entry, new_entry_str: str) -> None:
+        entry.delete(0, 1000)
+        entry.insert(
+                0,
+                new_entry_str
+        )
