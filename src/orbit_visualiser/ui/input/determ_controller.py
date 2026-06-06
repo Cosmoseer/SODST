@@ -23,8 +23,13 @@ class DetermController(Controller):
                 third_pos = self._array_from_entries(self._builder.third_pos_entries)
                 # also get gravitational parameter when built
 
-    def _array_from_entries(entries: tuple[Entry]) -> NDArray[np.float64]:
-        pass
+    def _array_from_entries(self, entries: tuple[Entry]) -> NDArray[np.float64]:
+        entry_value_list = []
+        for entry in entries:
+            value_str = entry.get()
+            entry_value_list.append(self._numerical_validation(new_val = value_str)[0])
+
+        return np.array(entry_value_list)
 
     def validate_determination_input(self, variable: str):
         try:
