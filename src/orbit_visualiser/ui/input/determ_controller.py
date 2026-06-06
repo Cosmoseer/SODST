@@ -23,10 +23,16 @@ class DetermController(Controller):
 
         match algorithm:
             case "gibbs":
-                first_pos = self._array_from_entries(self._builder.first_pos_entries)
-                second_pos = self._array_from_entries(self._builder.second_pos_entries)
-                third_pos = self._array_from_entries(self._builder.third_pos_entries)
-                # also get gravitational parameter when built
+                try:
+                    first_pos = self._array_from_entries(self._builder.first_pos_entries)
+                    second_pos = self._array_from_entries(self._builder.second_pos_entries)
+                    third_pos = self._array_from_entries(self._builder.third_pos_entries)
+                except ValueError:
+                    self._invalid_input_message()
+                    return
+
+                orbit = determination_alg(first_pos, second_pos, third_pos, mu)
+
 
     def _array_from_entries(self, entries: tuple[Entry]) -> NDArray[np.float64]:
         entry_value_list = []
