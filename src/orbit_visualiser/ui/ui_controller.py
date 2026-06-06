@@ -49,13 +49,22 @@ class UIController(Controller):
     def format_display_value(self, value: float | str, units: str | None) -> str:
         return self._properties_controller.format_display_value(value, units)
 
-    def slider_changed(self, variable: str, input_type: str, new_val: str | float) -> None:
-        self._variables_controller.update_variable(
-            variable,
-            input_type,
-            new_val
-        )
-        self._properties_controller.update_display()
+    def slider_changed(
+            self,
+            cls: VariablesBuilder | DetermBuilder,
+            variable: str,
+            input_type: str,
+            new_val: str | float
+    ) -> None:
+        if isinstance(cls, VariablesBuilder):
+            self._variables_controller.update_variable(
+                variable,
+                input_type,
+                new_val
+            )
+            self._properties_controller.update_display()
+        elif isinstance(cls, DetermBuilder):
+            pass
 
     def determine_orbit(
             self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]

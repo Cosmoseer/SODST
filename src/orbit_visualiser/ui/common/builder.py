@@ -207,7 +207,7 @@ class InputBuilder(Builder):
             slider_name,
             Scale(root, from_ = lims[0], to = lims[1], resolution = 1/10**spec.decimal_places, length = 275,
                   orient = "horizontal", variable = slider_var,
-                  command = partial(slider_changed, variable, "slider"),
+                  command = partial(slider_changed, self, variable, "slider"),
                   tickinterval = 0, showvalue = 0,
                   state = spec.init_state
                   )
