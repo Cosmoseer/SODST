@@ -1,4 +1,4 @@
-from tkinter import messagebox
+from tkinter import messagebox, DoubleVar, Entry
 from typing import TypeAlias
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
@@ -14,12 +14,18 @@ class Controller():
         self._builder = builder
         self._oda = oda
 
-    def _numerical_validation(self, variable: str | None = None) -> tuple[float, str]:
-        new_val_str = getattr(self._builder, f"{variable}_entry").get().strip()
+    def _numerical_validation(
+            self, variable: str | None = None, new_val: str | None = None
+    ) -> tuple[float, str]:
+        if variable is None and new_val is None:
+            raise ValueError("Both variable and new_val arguments can't be None")
+
+        new_val_str = (getattr(self._builder, f"{variable}_entry").get().strip() if new_val is None
+                       else new_val)
 
         new_val_float = float(new_val_str)
 
-        if new_val_float < 0 and variable != "nu":
+        if new_val_float < 0 and variable is not None and variable != "nu":
             raise ValueError
 
         return new_val_float, new_val_str
