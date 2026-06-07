@@ -42,6 +42,10 @@ class UIController(Controller):
 
         elif isinstance(cls, DetermBuilder):
             self._determ_controller.validate_determination_input(variable)
+            if variable == "mu":
+                self._determ_controller.slider_entry_interaction(
+                    "entry", variable, float(event.widget.get())
+                )
 
     def reset_state(self) -> None:
         return self._variables_controller.reset_state()
@@ -63,7 +67,7 @@ class UIController(Controller):
             )
             self._properties_controller.update_display()
         elif isinstance(cls, DetermBuilder):
-            pass
+            self._determ_controller.slider_entry_interaction("slider", variable, float(new_val))
 
     def determine_orbit(
             self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]
