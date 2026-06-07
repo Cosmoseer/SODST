@@ -33,6 +33,7 @@ class UIController(Controller):
     def callbacks(self) -> dict[str, Callable[[Any], Any]]:
         return self._callbacks
 
+    # TODO : remove reliance on variable argument, since it's used to get the value of the entries which can be obtained from event.widget.get()
     def manual_input_changed(
             self, cls: VariablesBuilder | DetermBuilder, variable: str, event: Event
     ) -> None:
