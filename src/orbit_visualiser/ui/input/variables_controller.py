@@ -79,7 +79,7 @@ class VariablesController(Controller):
     ) -> None:
         new_val = float(new_val)
 
-        self._slider_entry_interaction(input_type, variable, new_val)
+        self.slider_entry_interaction(input_type, variable, new_val)
 
         if variable in ["nu", "raan", "i", "omega"]:
             new_val = np.deg2rad(float(new_val))
