@@ -11,11 +11,6 @@ class VariablesBuilder(InputBuilder):
     def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
         super().__init__(input_frame, oda, geo_manager)
 
-
-    @property
-    def variable_specs(self) -> dict[str, VariableSpec]:
-        return self._variable_specs
-
     @property
     def e_slider(self) -> Scale:
         return self._e_slider

@@ -133,6 +133,10 @@ class InputBuilder(Builder):
     def mu_entry(self) -> Entry:
         return self._mu_entry
 
+    @property
+    def variable_specs(self) -> dict[str, VariableSpec]:
+        return self._variable_specs
+
     def _build_input_label_frame(
             self,
             root: Frame,
