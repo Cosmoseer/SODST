@@ -53,13 +53,12 @@ class UIController(Controller):
             self,
             cls: VariablesBuilder | DetermBuilder,
             variable: str,
-            input_type: str,
             new_val: str | float
     ) -> None:
         if isinstance(cls, VariablesBuilder):
             self._variables_controller.update_variable(
                 variable,
-                input_type,
+                "slider",
                 new_val
             )
             self._properties_controller.update_display()
