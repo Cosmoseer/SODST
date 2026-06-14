@@ -33,7 +33,18 @@ class DetermController(Controller):
                     self._warning_message()
                     return
 
-                orbit = determination_alg(first_pos, second_pos, third_pos, mu)
+                inputs = [first_pos, second_pos, third_pos, mu]
+
+        try:
+            orbit = determination_alg(*inputs)
+        except ValueError:
+            self._warning_message("State cannot be evaluated at infinity")
+            return
+
+        self._update_satellite_state(orbit)
+
+        self._orbit_fig_cont.redraw_orbit()
+        self._orbit_fig_cont.redraw_satellite()
 
 
     def _array_from_entries(self, entries: tuple[Entry]) -> NDArray[np.float64]:
