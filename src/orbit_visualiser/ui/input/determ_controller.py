@@ -20,7 +20,7 @@ class DetermController(Controller):
         try:
             mu = self._numerical_validation(new_val = self._builder.mu_entry.get())[0]
         except ValueError:
-            self._invalid_input_message()
+            self._warning_message()
             return
 
         match algorithm:
@@ -30,7 +30,7 @@ class DetermController(Controller):
                     second_pos = self._array_from_entries(self._builder.second_pos_entries)
                     third_pos = self._array_from_entries(self._builder.third_pos_entries)
                 except ValueError:
-                    self._invalid_input_message()
+                    self._warning_message()
                     return
 
                 orbit = determination_alg(first_pos, second_pos, third_pos, mu)
@@ -48,5 +48,5 @@ class DetermController(Controller):
         try:
             self._numerical_validation(variable)
         except ValueError:
-            self._invalid_input_message()
+            self._warning_message()
             return

@@ -32,8 +32,8 @@ class Controller():
         return new_val_float, new_val_str
 
     @staticmethod
-    def _invalid_input_message() -> None:
-        messagebox.showwarning("Warning", "Invalid inputs")
+    def _warning_message(warning_msg: str = "Invalid inputs") -> None:
+        messagebox.showwarning("Warning", warning_msg)
 
     def slider_entry_interaction(
             self, input_type: str, variable: str, new_val: float | None

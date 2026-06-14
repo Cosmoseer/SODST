@@ -1,4 +1,4 @@
-from tkinter import Entry, messagebox, DoubleVar
+from tkinter import Entry, DoubleVar
 from decimal import Decimal
 import numpy as np
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
@@ -48,7 +48,7 @@ class VariablesController(Controller):
         try:
             new_val_float, new_val_str = self._numerical_validation(variable)
         except ValueError:
-            self._invalid_input_message()
+            self._warning_message()
             return
 
         # When e < 1 then the orbit is periodic, and so the true anomaly is as well.
@@ -101,7 +101,7 @@ class VariablesController(Controller):
             self._update_satellite_state(Orbit.from_orbital_elements(*new_values.values()))
 
         except ValueError:
-            messagebox.showwarning("Warning", "State cannot be evaluated at infinity")
+            self._warning_message("State cannot be evaluated at infinity")
             return
 
         self._orbit_fig_cont.redraw_orbit()
