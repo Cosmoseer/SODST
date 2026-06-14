@@ -5,6 +5,7 @@ from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
 from orbit_visualiser.ui.properties.properties_builder import PropertiesBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
+from orbit_visualiser.core import Orbit, Satellite
 
 Builders: TypeAlias = DetermBuilder | VariablesBuilder | OrbitFigureBuilder | PropertiesBuilder
 
@@ -57,3 +58,9 @@ class Controller():
                 0,
                 new_entry_str
         )
+
+    def _update_satellite_state(self, orbit: Orbit) -> None:
+        sat: Satellite = self._oda.satellite
+        sat.position = orbit.position
+        sat.velocity = orbit.velocity
+        sat.central_body.mu = orbit.mu

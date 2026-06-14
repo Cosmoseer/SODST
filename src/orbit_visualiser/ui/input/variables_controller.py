@@ -3,7 +3,7 @@ from decimal import Decimal
 import numpy as np
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
 from orbit_visualiser.ui.input.variables_builder import  VariablesBuilder
-from orbit_visualiser.core import Orbit, Satellite, asymptote_anomaly
+from orbit_visualiser.core import Orbit, asymptote_anomaly
 from orbit_visualiser.ui.common.utils import floor_float
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.controller import Controller
@@ -38,7 +38,7 @@ class VariablesController(Controller):
 
             init_values.append(init_value)
 
-        self._update_satellite_state(*init_values)
+        self._update_satellite_state(Orbit.from_orbital_elements(*init_values))
 
         self._orbit_fig_cont.redraw_orbit()
         self._orbit_fig_cont.redraw_satellite()
@@ -98,7 +98,7 @@ class VariablesController(Controller):
         self._configure_input_widgets(new_values, variable)
 
         try:
-            self._update_satellite_state(*new_values.values())
+            self._update_satellite_state(Orbit.from_orbital_elements(*new_values.values()))
 
         except ValueError:
             messagebox.showwarning("Warning", "State cannot be evaluated at infinity")
@@ -106,14 +106,6 @@ class VariablesController(Controller):
 
         self._orbit_fig_cont.redraw_orbit()
         self._orbit_fig_cont.redraw_satellite()
-
-    def _update_satellite_state(self, e: float, rp: float, raan: float,
-                                i: float, omega: float, mu: float, nu: float) -> None:
-        orbit = Orbit.from_orbital_elements(e, rp, raan, i, omega, mu, nu)
-        sat: Satellite = self._oda.satellite
-        sat.position = orbit.position
-        sat.velocity = orbit.velocity
-        sat.central_body.mu = mu
 
     def _configure_input_widgets(self, new_values: dict[str, float], variable: str) -> None:
         new_val = new_values[variable]
