@@ -40,7 +40,7 @@ class Controller():
     ) -> None:
         if new_val is None:
             new_val = float(getattr(self._builder, f"{variable}_{input_type}").get())
-#test comment
+
         match input_type:
             case "slider":
                 self._set_entry(
