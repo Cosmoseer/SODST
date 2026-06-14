@@ -18,7 +18,7 @@ class UIController(Controller):
 
         self._figure_controller = OrbitFigureController(builder.figure_builder, oda)
         self._variables_controller = VariablesController(builder.input_builder, oda, self._figure_controller)
-        self._determ_controller = DetermController(builder.determ_builder, oda)
+        self._determ_controller = DetermController(builder.determ_builder, oda, self._figure_controller)
         self._properties_controller = PropertiesController(builder.properties_builder, oda)
 
         self._callbacks: dict[str, Callable[[Any], Any]] = {

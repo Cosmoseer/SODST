@@ -5,11 +5,13 @@ from tkinter import Entry
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.controller import Controller
+from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
 
 class DetermController(Controller):
 
-    def __init__(self, builder: DetermBuilder, oda: OrbitDataAccess):
+    def __init__(self, builder: DetermBuilder, oda: OrbitDataAccess, figure_cont: OrbitFigureController):
         super().__init__(builder, oda)
+        self._orbit_fig_cont = figure_cont
 
     def determine_orbit(
             self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]
