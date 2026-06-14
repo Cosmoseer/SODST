@@ -71,12 +71,7 @@ class VariablesController(Controller):
 
         self.update_variable(variable, "entry", new_val_float)
 
-    def update_variable(
-            self,
-            variable: str,
-            input_type: str,
-            new_val: str | float
-    ) -> None:
+    def update_variable(self, variable: str, input_type: str, new_val: str | float) -> None:
         new_val = float(new_val)
 
         self.slider_entry_interaction(input_type, variable, new_val)
