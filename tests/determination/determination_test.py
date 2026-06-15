@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from numpy.typing import NDArray
-from orbit_visualiser.core import gibbs_orbit_determination
+from orbit_visualiser.core import gibbs_orbit_determination, DeterminationError
 
 @pytest.mark.parametrize("r1, r2, r3, mu, expected_elements", [
     (np.array([50_000, 0, 0]), np.array([0, 50_000, 0]), np.array([-50_000, 0, 0]), 398600,
@@ -26,3 +26,15 @@ def test_gibbs(
     ]
 
     assert np.allclose(elements, expected_elements)
+
+@pytest.mark.parametrize("r1, r2, r3, mu", [
+    (np.array([10000, 0, 0]), np.array([20000, 0, 0]), np.array([10000, 10000, 0]), 398600)
+])
+def test_gibbs_exception(
+        r1: NDArray[np.float64],
+        r2: NDArray[np.float64],
+        r3: NDArray[np.float64],
+        mu: float
+):
+    with pytest.raises(DeterminationError):
+        gibbs_orbit_determination(r1, r2, r3, mu)
