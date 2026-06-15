@@ -23,14 +23,14 @@ class UIBuilder(Builder):
         self._figure_frame = self._build_frame(figure_geom, scrollable = False)
         self._properties_frame = self._build_frame(props_geom)
 
-        self._input_builder = ElementsBuilder(self._input_frame, oda, geo_manager)
+        self._elements_builder = ElementsBuilder(self._input_frame, oda, geo_manager)
         self._determ_builder = DetermBuilder(self._determ_frame, oda, geo_manager)
         self._figure_builder = OrbitFigureBuilder(self._figure_frame, oda, geo_manager)
         self._properties_builder = PropertiesBuilder(self._properties_frame, oda)
 
     @property
-    def input_builder(self) -> ElementsBuilder:
-        return self._input_builder
+    def elements_builder(self) -> ElementsBuilder:
+        return self._elements_builder
 
     @property
     def figure_builder(self) -> OrbitFigureBuilder:
@@ -48,7 +48,7 @@ class UIBuilder(Builder):
     ) -> None:
         manual_input_changed = callbacks["manual_input_changed"]
         slider_changed = callbacks["slider_changed"]
-        self._input_builder.build(callbacks["reset_state"], callbacks["manual_input_changed"],
+        self._elements_builder.build(callbacks["reset_state"], callbacks["manual_input_changed"],
                                   slider_changed)
         self._determ_builder.build(manual_input_changed, slider_changed, callbacks["determine_orbit"])
         self._figure_builder.build()
