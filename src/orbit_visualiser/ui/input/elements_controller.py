@@ -1,10 +1,9 @@
-from tkinter import Entry, DoubleVar
+from tkinter import Entry
 from decimal import Decimal
 import numpy as np
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
 from orbit_visualiser.ui.input.elements_builder import  ElementsBuilder
-from orbit_visualiser.core import Orbit, asymptote_anomaly
-from orbit_visualiser.ui.common.utils import floor_float
+from orbit_visualiser.core import Orbit
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.controller import Controller
 
@@ -90,7 +89,7 @@ class ElementsController(Controller):
         }
         new_values[variable] = new_val
 
-        self._configure_input_widgets(new_values, variable)
+        self._configure_input_widgets(self._builder, new_values, variable)
 
         try:
             self._update_satellite_state(Orbit.from_orbital_elements(*new_values.values()))
@@ -101,49 +100,3 @@ class ElementsController(Controller):
 
         self._orbit_fig_cont.redraw_orbit()
         self._orbit_fig_cont.redraw_satellite()
-
-    def _configure_input_widgets(self, new_values: dict[str, float], variable: str) -> None:
-        new_val = new_values[variable]
-
-        # The value of the eccentricity determines the range of possible true anomaly values, which
-        # this if block checks for.
-        if variable == "e":
-            if new_val >= 1:
-                # Slider should never allow for users to input the true anomaly of the asymptote
-                t_asymp_offset = np.degrees(asymptote_anomaly(new_val)) - 0.01
-                t_asymp_slider_lim = floor_float(t_asymp_offset, 2)
-                self._builder.nu_slider.configure(from_ = -t_asymp_slider_lim, to = t_asymp_slider_lim)
-
-                nu = new_values["nu"]
-                if nu < -t_asymp_offset:
-                    new_values["nu"] = -t_asymp_offset
-                elif nu > t_asymp_offset:
-                    new_values["nu"] = t_asymp_offset
-            else:
-                self._builder.nu_slider.configure(from_ = 0, to = 360)
-
-        if np.isclose(new_values["e"], 0):
-            new_values["omega"] = 0.0
-            omega_var: DoubleVar = self._builder.omega_var
-            omega_var.set(0.0)
-
-            self._set_entry(self._builder.omega_entry, "0.00")
-
-            self._builder.omega_entry.configure(state = "disabled")
-            self._builder.omega_slider.configure(state = "disabled")
-        else:
-            self._builder.omega_entry.configure(state = "normal")
-            self._builder.omega_slider.configure(state = "normal")
-
-        if np.isclose(new_values["i"], 0):
-            new_values["raan"] = 0.0
-            raan_var: DoubleVar = self._builder.raan_var
-            raan_var.set(0.0)
-
-            self._set_entry(self._builder.raan_entry, "0.00")
-
-            self._builder.raan_entry.configure(state = "disabled")
-            self._builder.raan_slider.configure(state = "disabled")
-        else:
-            self._builder.raan_entry.configure(state = "normal")
-            self._builder.raan_slider.configure(state = "normal")
