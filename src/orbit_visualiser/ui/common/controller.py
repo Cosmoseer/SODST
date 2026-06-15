@@ -67,7 +67,7 @@ class Controller():
         sat.velocity = orbit.velocity
         sat.central_body.mu = orbit.mu
 
-    def _configure_input_widgets(self, builder: ElementsBuilder, new_values: dict[str, float], variable: str | None = None) -> None:
+    def _configure_elements_widgets(self, builder: ElementsBuilder, new_values: dict[str, float], variable: str | None = None) -> None:
         # The value of the eccentricity determines the range of possible true anomaly values, which
         # this if block checks for.
         if variable == "e" or variable is None:

@@ -89,7 +89,7 @@ class ElementsController(Controller):
         }
         new_values[variable] = new_val
 
-        self._configure_input_widgets(self._builder, new_values, variable)
+        self._configure_elements_widgets(self._builder, new_values, variable)
 
         try:
             self._update_satellite_state(Orbit.from_orbital_elements(*new_values.values()))
