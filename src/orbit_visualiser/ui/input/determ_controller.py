@@ -7,6 +7,7 @@ from orbit_visualiser.ui.input.elements_builder import ElementsBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.controller import Controller
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
+from orbit_visualiser.core import Orbit
 
 class DetermController(Controller):
 
@@ -44,12 +45,28 @@ class DetermController(Controller):
                 inputs = [first_pos, second_pos, third_pos, mu]
 
         try:
-            orbit = determination_alg(*inputs)
+            orbit: Orbit = determination_alg(*inputs)
         except ValueError:
             self._warning_message("State cannot be evaluated at infinity")
             return
 
         self._update_satellite_state(orbit)
+
+        new_elements_values = {
+            "e": orbit.eccentricity,
+            "rp": orbit.radius_of_periapsis,
+            "raan": np.rad2deg(orbit.right_ascen_of_ascend_node),
+            "i": np.rad2deg(orbit.inclination),
+            "omega": np.rad2deg(orbit.argument_of_periapsis),
+            "mu": orbit.mu,
+            "nu": np.rad2deg(self._oda.satellite.true_anomaly)
+        }
+
+        self._configure_elements_widgets(self._elms_builder, new_elements_values)
+
+        for element, value in new_elements_values.items():
+            getattr(self._elms_builder, f"{element}_slider").set(value)
+            self._set_entry(getattr(self._elms_builder, f"{element}_entry"), str(value))
 
         self._orbit_fig_cont.redraw_orbit()
         self._orbit_fig_cont.redraw_satellite()
