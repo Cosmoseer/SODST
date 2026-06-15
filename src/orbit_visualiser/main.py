@@ -10,22 +10,17 @@ class OrbitVisualiser():
 
         builder = UIBuilder(root, oda, geo_manager)
         controller = UIController(builder, oda)
-        builder.build(
-            controller.reset_state,
-            controller.validate_manual_input,
-            controller.slider_changed,
-            controller.format_display_value
-        )
+        builder.build(controller.callbacks)
 
     def _initialise_orbit_objects(self) -> OrbitDataAccess:
         orbit: Orbit = Orbit.from_orbital_elements(
             initial_config.eccentricity,
             initial_config.radius_of_periapsis,
-            initial_config.true_anomaly,
             initial_config.right_ascension_of_the_ascending_node,
             initial_config.inclination,
             initial_config.argument_of_periapsis,
-            initial_config.gravitational_parameter
+            initial_config.gravitational_parameter,
+            initial_config.true_anomaly,
         )
 
         central_body: CentralBody = CentralBody(
@@ -40,7 +35,7 @@ class OrbitVisualiser():
 # TODO: Add variable presets (Earth - ISS, Earth - Geostationary, Mars - Phobos etc).
 # TODO: Write proper docstrings
 if __name__ == "__main__":
-    root = Window(title = "3D Orbit Visualiser", themename = "darkly", position = (0, 0))
+    root = Window(title = "SODST", themename = "darkly", position = (0, 0))
 
     geo_manager = GeometryManager(sys.platform, root)
 

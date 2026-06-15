@@ -1,8 +1,9 @@
-from typing import Literal
+from typing import Literal, Callable
 import numpy as np
 from numpy.typing import NDArray
 from math import pi
-from orbit_visualiser.core import Satellite, OrbitType, perifocal_position, perifocal_to_eci_trans_mat
+from orbit_visualiser.core import (Satellite, OrbitType, perifocal_position, perifocal_to_eci_trans_mat,
+                                   gibbs_orbit_determination)
 
 # TODO: Write docstrings
 class OrbitDataAccess():
@@ -38,8 +39,17 @@ class OrbitDataAccess():
                                                     orb.argument_of_periapsis)
         return np.matmul(eci_trans, pf_pos_data)
 
+    # TODO: Write code for perifocal reference frame input
     def get_sat_position(self, ref_frame: Literal["eci", "perifocal"] = "eci") -> NDArray[np.float64]:
         if ref_frame == "perifocal":
             pass
 
         return self._satellite.position
+
+    @staticmethod
+    def determination_algorithm(algorithm: Literal["gibbs"]) -> Callable:
+        match algorithm:
+            case "gibbs":
+                return gibbs_orbit_determination
+
+        raise ValueError(f"Unknown determination algorithm: {algorithm}")

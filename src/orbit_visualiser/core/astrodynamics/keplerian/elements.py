@@ -5,6 +5,7 @@ from functools import cache
 from orbit_visualiser.core.astrodynamics.types import OrbitType
 from orbit_visualiser.core.astrodynamics.keplerian.classification import orbit_type
 from orbit_visualiser.core.astrodynamics.keplerian.dynamics import specific_ang_momentum_from_state
+from orbit_visualiser.core.utils import restrict
 
 def eccentricity_vector_from_state(r: NDArray[np.float64], v: NDArray[np.float64], mu: float) -> NDArray[np.float64]:
     """
@@ -79,11 +80,7 @@ def true_anomaly(r: NDArray[np.float64], e_vect: NDArray[np.float64], e: float, 
     """
     e_norm = e_vect/np.linalg.norm(e_vect)
     r_norm = r/np.linalg.norm(r)
-    dot = np.dot(e_norm, r_norm)
-    if dot > 1:
-        dot = 1
-    elif dot < -1:
-        dot = -1
+    dot = restrict(np.dot(e_norm, r_norm))
 
     true_anomaly = np.arccos(dot)
 
@@ -457,11 +454,8 @@ def argument_of_periapsis(node_line: NDArray[np.float64], e: NDArray[np.float64]
     """
     node_norm = node_line/np.linalg.norm(node_line)
     e_norm = e/np.linalg.norm(e)
-    dot = np.dot(node_norm, e_norm)
-    if dot > 1:
-        dot = 1
-    elif dot < -1:
-        dot = -1
+    dot = restrict(np.dot(node_norm, e_norm))
+
     arg_periapsis = np.arccos(dot)
 
     if e[2] < 0 or (np.isclose(i, 0) and e[1] < 0):

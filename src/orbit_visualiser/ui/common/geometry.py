@@ -47,26 +47,32 @@ class GeometryManager():
             root.resizable(False, False)
 
     @property
-    def parent_frame(self) -> tuple[FrameGeometry, FrameGeometry, FrameGeometry]:
+    def parent_frame(self) -> tuple[FrameGeometry, FrameGeometry, FrameGeometry, FrameGeometry]:
         """
-        The tuple of frame geometry of the 3 top level frames, input, figure and properties in that
+        The tuple of frame geometry of the 4 top level frames, input, determination, figure and properties in that
         order.
 
         Returns
         -------
-        tuple[FrameGeometry, FrameGeometry, FrameGeometry]
+        tuple[FrameGeometry, FrameGeometry, FrameGeometry, FrameGeometry]
             Tuple of parent frame FrameGeometry
         """
         return (
+            FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
             FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
             FrameGeometry(padx = 8, pady = 6),
             FrameGeometry(padx = 2, pady = (2, 0), fill = "y", expand = True),
         )
 
-    @property
-    def parent_scrollable(self) -> ScrolledFrameGeometry:
+    def parent_scrollable(self, determ_frame: bool) -> ScrolledFrameGeometry:
         """
         The geometry for the scrolled parent frames (input and properties)
+
+        Parameters
+        ----------
+        determ_frame : bool
+            Boolean for whether the scrollable frame geometry being grabbed is for the determination
+            frame
 
         Returns
         -------
@@ -76,7 +82,7 @@ class GeometryManager():
         if self._os_win:
             return ScrolledFrameGeometry(width = 375, padding = 10)
 
-        return ScrolledFrameGeometry(width = 315)
+        return ScrolledFrameGeometry(width = 335) if determ_frame else ScrolledFrameGeometry(width = 315)
 
     @property
     def input_widgets(self) -> tuple[FrameGeometry, SliderGeometry, EntryGeometry]:
@@ -126,3 +132,23 @@ class GeometryManager():
             return (5, 5)
 
         return (7, 7)
+
+    @property
+    def pos_entries(self) -> list[tuple[PlaceableGeometry, EntryGeometry]]:
+        pos_entry_geometries: list[tuple[PlaceableGeometry, EntryGeometry]] = []
+        if self._os_win:
+            pass
+
+        label_x, entry_x = 5, 22
+        dist_to_next_entry = 100
+        y = 2.5
+        width = 8
+        for _ in range(3):
+            pos_entry_geometries.append((
+                PlaceableGeometry(x = label_x, y = y),
+                EntryGeometry(x = entry_x, y = y, width = width)
+            ))
+            label_x += dist_to_next_entry
+            entry_x += dist_to_next_entry
+
+        return pos_entry_geometries

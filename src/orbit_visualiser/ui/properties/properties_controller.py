@@ -1,16 +1,16 @@
 import numpy as np
-from orbit_visualiser.ui.properties.properties_panel_builder import PropertiesBuilder
+from orbit_visualiser.ui.properties.properties_builder import PropertiesBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.core import OrbitType
+from orbit_visualiser.ui.common.controller import Controller
 
 # TODO: Properly display very large values in the properties panel without them being cut off.
 
-class PropertiesController():
+class PropertiesController(Controller):
 
 
     def __init__(self, builder: PropertiesBuilder, oda: OrbitDataAccess):
-        self._builder = builder
-        self._oda = oda
+        super().__init__(builder, oda)
 
     def update_display(self) -> None:
         for property, spec in list(self._builder.property_specs.items()):

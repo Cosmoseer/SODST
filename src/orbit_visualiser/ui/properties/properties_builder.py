@@ -6,16 +6,11 @@ from orbit_visualiser.ui.common.builder import Builder
 from orbit_visualiser.ui.common.specs import PropertySpec
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 
-
+# TODO: Incorporate geometry manager into properties builder
 class PropertiesBuilder(Builder):
 
-    def __init__(
-            self,
-            properties_frame: Frame,
-            oda: OrbitDataAccess
-    ):
-        self._properties_frame = properties_frame
-        self._oda = oda
+    def __init__(self, properties_frame: Frame, oda: OrbitDataAccess):
+        super().__init__(properties_frame, oda, None)
 
         self._orbital_properties: dict[str, PropertySpec[Satellite]] = {
             "orbit_type" : PropertySpec("Orbit type", None, lambda sat: sat.orbit.orbit_type),
@@ -59,23 +54,23 @@ class PropertiesBuilder(Builder):
     def property_specs(self) -> dict[str, PropertySpec]:
         return self._property_specs
 
-    def build_properties_frame(self, format_value: Callable) -> None:
-        self._build_separator(self._properties_frame, "Properties")
+    def build(self, format_value: Callable) -> None:
+        self._build_separator(self._root, "Properties")
         orbital_props_frame = LabelFrame(
-            self._properties_frame, bd = 1, relief = "sunken", text = "Orbit",
+            self._root, bd = 1, relief = "sunken", text = "Orbit",
             font = self._subtitle_font, width = 244
         )
         self._populate_properties(orbital_props_frame, self._orbital_properties, format_value)
         orbital_props_frame.pack(side = "top", anchor = "nw", pady = (2, 0), fill = "x")
 
         sat_props_frame = LabelFrame(
-            self._properties_frame, bd = 1, relief = "sunken", text = "Satellite state",
+            self._root, bd = 1, relief = "sunken", text = "Satellite state",
             font = self._subtitle_font, width = 244
         )
         self._populate_properties(sat_props_frame, self._satellite_properties, format_value)
         sat_props_frame.pack(side = "top", anchor = "nw", pady = (2, 0), fill = "x")
 
-        self._properties_frame.pack(side = "top", anchor = "n", pady = (2, 0))
+        self._root.pack(side = "top", anchor = "n", pady = (2, 0))
 
     def _populate_properties(
             self,

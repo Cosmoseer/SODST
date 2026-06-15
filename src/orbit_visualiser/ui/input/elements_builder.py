@@ -1,0 +1,84 @@
+from tkinter import Frame, Scale, Entry
+from typing import Callable, Any
+from orbit_visualiser.ui.common.builder import InputBuilder
+from orbit_visualiser.ui.common.specs import VariableSpec
+from orbit_visualiser.ui.data_access import OrbitDataAccess
+from orbit_visualiser.ui.common.geometry import GeometryManager
+
+
+class ElementsBuilder(InputBuilder):
+
+    def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
+        super().__init__(input_frame, oda, geo_manager)
+
+    @property
+    def e_slider(self) -> Scale:
+        return self._e_slider
+
+    @property
+    def e_entry(self) -> Entry:
+        return self._e_entry
+
+    @property
+    def rp_slider(self) -> Scale:
+        return self._rp_slider
+
+    @property
+    def rp_entry(self) -> Entry:
+        return self._rp_entry
+
+    @property
+    def nu_slider(self) -> Scale:
+        return self._nu_slider
+
+    @property
+    def nu_entry(self) -> Entry:
+        return self._nu_entry
+
+    @property
+    def raan_slider(self) -> Scale:
+        return self._raan_slider
+
+    @property
+    def raan_entry(self) -> Entry:
+        return self._raan_entry
+
+    @property
+    def i_slider(self) -> Scale:
+        return self._i_slider
+
+    @property
+    def i_entry(self) -> Entry:
+        return self._i_entry
+
+    @property
+    def omega_slider(self) -> Scale:
+        return self._omega_slider
+
+    @property
+    def omega_entry(self) -> Entry:
+        return self._omega_entry
+
+    def build(
+            self,
+            reset: Callable[[Any], Any],
+            input_changed: Callable[[Any], Any],
+            slider_changed: Callable[[Any], Any]
+    ) -> None:
+        elm_frame = Frame(self._root)
+        self._elements_frame = elm_frame
+
+        self._build_separator(elm_frame, "Elements")
+
+        input_sections: dict[str, dict[str, VariableSpec]] = {
+            "Orbital geometry": self._orbit_specs,
+            "Central body": self._central_body_specs,
+            "Satellite": self._satellite_specs
+        }
+
+        for section, specs in input_sections.items():
+            self._build_input_label_frame(elm_frame, section, input_changed, slider_changed, specs)
+
+        self._build_button(elm_frame, "Reset", reset)
+
+        elm_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
