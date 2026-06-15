@@ -6,13 +6,14 @@ from abc import ABC, abstractmethod
 from orbit_visualiser.ui.common.specs import VariableSpec
 from orbit_visualiser.ui.common.presets import initial_config
 from orbit_visualiser.ui.common.geometry import GeometryManager
+from orbit_visualiser.ui.common.fonts import title_font, subtitle_font, label_font
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 
 class Builder(ABC):
 
-    _title_font = ("Orbitron", 16, "bold")
-    _subtitle_font = ("Orbitron", 13, "normal")
-    _label_font = ("Fira Mono", 9, "normal")
+    _title_font = title_font
+    _subtitle_font = subtitle_font
+    _label_font = label_font
 
     def __init__(self, root: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
         self._root = root
