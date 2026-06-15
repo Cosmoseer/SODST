@@ -16,7 +16,7 @@ class Satellite():
     ----------
     position : Sequence | NDArray[np.float64]
         The initial ECI position vector of the satellite (km)
-    velocity : float
+    velocity : Sequence | NDArray[np.float64]
         The initial ECI velocity vector of the satellite (km/s)
     central_body: CentralBody
         The CentralBody object representing the body that the satellite is orbiting
