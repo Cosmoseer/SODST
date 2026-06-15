@@ -17,6 +17,10 @@ def _gibbs_velocity(
     c_12 = np.cross(r_1, r_2)
     c_23 = np.cross(r_2, r_3)
     c_31 = np.cross(r_3, r_1)
+
+    if np.isclose(np.linalg.norm(c_12), 0) or np.isclose(np.linalg.norm(c_12), 0) or np.isclose(np.linalg.norm(c_12), 0):
+        raise DeterminationError("Determination algorithm requires non-collinear position vectors.")
+
     N = r1_norm*c_23 + r2_norm*c_31 + r3_norm*c_12
     N_norm = np.linalg.norm(N)
     D = c_12 + c_23 + c_31
