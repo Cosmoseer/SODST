@@ -19,3 +19,4 @@ from .astrodynamics.keplerian.state import (perifocal_position, perifocal_veloci
                                             flight_angle, time_since_periapsis)
 from .astrodynamics.transformations import eci_to_perifocal_trans_mat, perifocal_to_eci_trans_mat
 from .astrodynamics.determination.gibbs import gibbs_orbit_determination
+from .astrodynamics.determination.determination_error import DeterminationError
