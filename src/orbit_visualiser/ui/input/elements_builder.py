@@ -6,7 +6,7 @@ from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.geometry import GeometryManager
 
 
-class VariablesBuilder(InputBuilder):
+class ElementsBuilder(InputBuilder):
 
     def __init__(self, input_frame: Frame, oda: OrbitDataAccess, geo_manager: GeometryManager):
         super().__init__(input_frame, oda, geo_manager)
@@ -65,10 +65,10 @@ class VariablesBuilder(InputBuilder):
             input_changed: Callable[[Any], Any],
             slider_changed: Callable[[Any], Any]
     ) -> None:
-        var_frame = Frame(self._root)
-        self._variables_frame = var_frame
+        elm_frame = Frame(self._root)
+        self._elements_frame = elm_frame
 
-        self._build_separator(var_frame, "Variables")
+        self._build_separator(elm_frame, "Elements")
 
         input_sections: dict[str, dict[str, VariableSpec]] = {
             "Orbital geometry": self._orbit_specs,
@@ -77,8 +77,8 @@ class VariablesBuilder(InputBuilder):
         }
 
         for section, specs in input_sections.items():
-            self._build_input_label_frame(var_frame, section, input_changed, slider_changed, specs)
+            self._build_input_label_frame(elm_frame, section, input_changed, slider_changed, specs)
 
-        self._build_button(var_frame, "Reset", reset)
+        self._build_button(elm_frame, "Reset", reset)
 
-        var_frame.pack(side = "top", anchor = "nw", pady = (4, 0))
+        elm_frame.pack(side = "top", anchor = "nw", pady = (4, 0))

@@ -4,7 +4,7 @@ from ttkbootstrap.scrolled import ScrolledFrame
 from typing import Callable, Any
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
 from orbit_visualiser.ui.properties.properties_builder import PropertiesBuilder
-from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
+from orbit_visualiser.ui.input.elements_builder import ElementsBuilder
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.common.builder import Builder
@@ -23,13 +23,13 @@ class UIBuilder(Builder):
         self._figure_frame = self._build_frame(figure_geom, scrollable = False)
         self._properties_frame = self._build_frame(props_geom)
 
-        self._input_builder = VariablesBuilder(self._input_frame, oda, geo_manager)
+        self._input_builder = ElementsBuilder(self._input_frame, oda, geo_manager)
         self._determ_builder = DetermBuilder(self._determ_frame, oda, geo_manager)
         self._figure_builder = OrbitFigureBuilder(self._figure_frame, oda, geo_manager)
         self._properties_builder = PropertiesBuilder(self._properties_frame, oda)
 
     @property
-    def input_builder(self) -> VariablesBuilder:
+    def input_builder(self) -> ElementsBuilder:
         return self._input_builder
 
     @property

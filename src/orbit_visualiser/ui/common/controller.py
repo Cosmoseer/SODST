@@ -1,13 +1,13 @@
 from tkinter import messagebox, DoubleVar, Entry
 from typing import TypeAlias
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
-from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
+from orbit_visualiser.ui.input.elements_builder import ElementsBuilder
 from orbit_visualiser.ui.figure.orbit_figure_builder import OrbitFigureBuilder
 from orbit_visualiser.ui.properties.properties_builder import PropertiesBuilder
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.core import Orbit, Satellite
 
-Builders: TypeAlias = DetermBuilder | VariablesBuilder | OrbitFigureBuilder | PropertiesBuilder
+Builders: TypeAlias = DetermBuilder | ElementsBuilder | OrbitFigureBuilder | PropertiesBuilder
 
 class Controller():
 

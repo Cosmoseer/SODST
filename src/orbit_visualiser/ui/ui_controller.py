@@ -1,6 +1,6 @@
 from tkinter import Event
 from typing import Callable, Any, Literal
-from orbit_visualiser.ui.input.variables_controller import VariablesController
+from orbit_visualiser.ui.input.elements_controller import ElementsController
 from orbit_visualiser.ui.properties.properties_controller import PropertiesController
 from orbit_visualiser.ui.figure.orbit_figure_controller import OrbitFigureController
 from orbit_visualiser.ui.input.determ_controller import DetermController
@@ -8,7 +8,7 @@ from orbit_visualiser.ui.common.controller import Controller
 #from orbit_visualiser.ui.config.display_panel.display_panel_controller import DisplayController
 from orbit_visualiser.ui.data_access import OrbitDataAccess
 from orbit_visualiser.ui.ui_builder import UIBuilder
-from orbit_visualiser.ui.input.variables_builder import VariablesBuilder
+from orbit_visualiser.ui.input.elements_builder import ElementsBuilder
 from orbit_visualiser.ui.input.determ_builder import DetermBuilder
 
 class UIController(Controller):
@@ -17,8 +17,8 @@ class UIController(Controller):
         super().__init__(builder, oda)
 
         self._figure_controller = OrbitFigureController(builder.figure_builder, oda)
-        self._variables_controller = VariablesController(builder.input_builder, oda, self._figure_controller)
-        self._determ_controller = DetermController(builder.determ_builder, oda, self._figure_controller)
+        self._elements_controller = ElementsController(builder.input_builder, oda, self._figure_controller)
+        self._determ_controller = DetermController(builder.determ_builder, oda, self._figure_controller, self._elements_controller)
         self._properties_controller = PropertiesController(builder.properties_builder, oda)
 
         self._callbacks: dict[str, Callable[[Any], Any]] = {
@@ -35,10 +35,10 @@ class UIController(Controller):
 
     # TODO : remove reliance on variable argument, since it's used to get the value of the entries which can be obtained from event.widget.get()
     def manual_input_changed(
-            self, cls: VariablesBuilder | DetermBuilder, variable: str, event: Event
+            self, cls: ElementsBuilder | DetermBuilder, variable: str, event: Event
     ) -> None:
-        if isinstance(cls, VariablesBuilder):
-            self._variables_controller.update_from_manual_input(variable)
+        if isinstance(cls, ElementsBuilder):
+            self._elements_controller.update_from_manual_input(variable)
             self._properties_controller.update_display()
 
         elif isinstance(cls, DetermBuilder):
@@ -49,19 +49,19 @@ class UIController(Controller):
                 )
 
     def reset_state(self) -> None:
-        return self._variables_controller.reset_state()
+        return self._elements_controller.reset_state()
 
     def format_display_value(self, value: float | str, units: str | None) -> str:
         return self._properties_controller.format_display_value(value, units)
 
     def slider_changed(
             self,
-            cls: VariablesBuilder | DetermBuilder,
+            cls: ElementsBuilder | DetermBuilder,
             variable: str,
             new_val: str | float
     ) -> None:
-        if isinstance(cls, VariablesBuilder):
-            self._variables_controller.update_variable(
+        if isinstance(cls, ElementsBuilder):
+            self._elements_controller.update_variable(
                 variable,
                 "slider",
                 new_val
