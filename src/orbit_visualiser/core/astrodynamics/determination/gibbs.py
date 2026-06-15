@@ -5,8 +5,8 @@ from orbit_visualiser.core.orbit import Orbit
 def gibbs_orbit_determination(
         r_1: NDArray[np.float64], r_2: NDArray[np.float64], r_3: NDArray[np.float64], mu: float
 ) -> Orbit:
-    v_2 = _gibbs_velocity(r_1, r_2, r_3, mu)
-    return Orbit(r_2, v_2, mu)
+    v_1 = _gibbs_velocity(r_1, r_2, r_3, mu)
+    return Orbit(r_1, v_1, mu)
 
 def _gibbs_velocity(
         r_1: NDArray[np.float64], r_2: NDArray[np.float64], r_3: NDArray[np.float64], mu: float
@@ -22,5 +22,5 @@ def _gibbs_velocity(
     D = c_12 + c_23 + c_31
     D_norm = np.linalg.norm(D)
     S = (r2_norm - r3_norm)*r_1 + (r3_norm - r1_norm)*r_2 + (r1_norm - r2_norm)*r_3
-    return np.sqrt(mu/(N_norm*D_norm))*(np.cross(D, r_2)/r2_norm + S)
+    return np.sqrt(mu/(N_norm*D_norm))*(np.cross(D, r_1)/r1_norm + S)
 
