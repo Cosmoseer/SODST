@@ -13,6 +13,8 @@ Orbits are modelled and visualised in the Earth Centred Inertial (ECI) frame, wi
   - Inclination
   - Argument of periapsis
 
+Preliminary orbit determination is also available as an option for generating orbits. Choose an algorithm from the drop down menu (as of writing only Gibbs has been implemented) and input the necessary obersvational data.
+
 The central body has a radius of 6738km and an adjustable gravitational parameter. The radius of periapsis has therefore been given a lower limit of 6739km (meaning that we are assuming this Earth sized body has no atmosphere, or at least that any atmosphere has no effect on orbital motion). The true anomaly of the orbiting satellite is also adjustable to evaluate the kinematic state at different orbital positions. Various orbital and kinematic quantities are
 calculated and displayed, including (but not limited to):
   - Semi-major/minor axis
@@ -35,6 +37,7 @@ There are several features that are in development or planned:
   - A web interface
   - Option to change reference frame
   - Option to change parametrisation of orbital geometry
+  - Additional determination algorithm options
 
 ## Notes on the physical model
 

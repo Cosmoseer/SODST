@@ -5,6 +5,11 @@ All notable changes to this project will be documented here.
 # Unreleased
 - Certain orbital parameters can now be displayed in the plot
 
+# 0.6.0 - 15/06/2026
+- Orbit determination panel added
+- Can use the Gibbs preliminary determination algorithm
+- Variables panel renamed to "Elements"
+
 # 0.5.0 - 06/05/2026
 - 3D orbits now implemented
 - UI overhauled to variables | plot | properties
