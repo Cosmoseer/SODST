@@ -73,7 +73,7 @@ git clone https://github.com/Cosmoseer/SODST.git
 Navigate to the project folder:
 
 ```bash
-cd sodst
+cd SODST
 ```
 Create a virtual environment:
 
