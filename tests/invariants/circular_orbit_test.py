@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from numpy.typing import NDArray
 from typing import Callable
-from orbit_visualiser.core import Orbit, Satellite
+from sodst.core import Orbit, Satellite
 from tests.test_cases import rp_test_cases, rp_mu_test_cases
 
 @pytest.mark.parametrize("rp", rp_test_cases)

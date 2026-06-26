@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from numpy.typing import NDArray
-from orbit_visualiser.core import eci_to_perifocal_trans_mat, perifocal_to_eci_trans_mat
+from sodst.core import eci_to_perifocal_trans_mat, perifocal_to_eci_trans_mat
 
 # TODO: Write more test cases
 

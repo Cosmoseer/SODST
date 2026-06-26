@@ -2,7 +2,7 @@ import pytest
 from math import pi
 import numpy as np
 from numpy.typing import NDArray
-from orbit_visualiser.core import (perifocal_position, perifocal_velocity, radial_azimuthal_velocity,
+from sodst.core import (perifocal_position, perifocal_velocity, radial_azimuthal_velocity,
                                    speed, radius_from_state, radius_from_orbit_eq, escape_speed,
                                    flight_angle, time_since_periapsis)
 

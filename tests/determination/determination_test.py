@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from numpy.typing import NDArray
-from orbit_visualiser.core import gibbs_orbit_determination
+from sodst.core import gibbs_orbit_determination
 
 @pytest.mark.parametrize("r1, r2, r3, mu, expected_elements", [
     (np.array([50_000, 0, 0]), np.array([0, 50_000, 0]), np.array([-50_000, 0, 0]), 398600,
