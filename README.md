@@ -67,13 +67,13 @@ These are also listed in requirements.txt.
 Clone the repository:
 
 ```bash
-git clone https://github.com/Phim226/orbit-visualiser.git
+git clone https://github.com/Cosmoseer/SODST.git
 ```
 
 Navigate to the project folder:
 
 ```bash
-cd orbit-visualiser
+cd sodst
 ```
 Create a virtual environment:
 
@@ -127,7 +127,7 @@ The ```-e``` in requirements.txt ensures that the package is editable, which ens
 Run the program:
 
 ```python
-python src/orbit_visualiser/main.py
+python src/sodst/main.py
 ```
 
 When you're finished using the program or making changes then run:
@@ -138,7 +138,7 @@ deactivate
 to deactivate the virtual environment. When returning to the program, activate venv again using the commands above. So long as the project folder or .venv folder hasn't changed then you shouldn't need to reinstall any dependencies.
 
 ## Using Orbit Propagation
-As of the current version (v0.4.5) there is no CLI or GUI functionality for the orbit propagation. Navigate to src/orbit_visualiser/core/propagation.py, and go to the bottom of the file to the code snippet:
+As of the current version (v0.6.0) there is no CLI or GUI functionality for the orbit propagation. Navigate to src/sodst/core/propagation.py, and go to the bottom of the file to the code snippet:
 ```python
 if __name__ == "__main__":
 
