@@ -1,7 +1,7 @@
 import itertools
 from math import pi
 from typing import Any
-from orbit_visualiser.core import OrbitType, OrbitMotion, orbit_type
+from sodst.core import OrbitType, OrbitMotion, orbit_type
 
 # Tests to implement
 # TODO: Magnitude of angular momentum vector

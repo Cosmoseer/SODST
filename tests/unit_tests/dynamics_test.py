@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from numpy.typing import NDArray
-from orbit_visualiser.core import (OrbitType, specific_ang_momentum_from_state, specific_ang_momentum,
+from sodst.core import (OrbitType, specific_ang_momentum_from_state, specific_ang_momentum,
                                    specific_orbital_energy, characteristic_energy, excess_speed,
                                    vis_viva_speed)
 

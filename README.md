@@ -1,17 +1,19 @@
-# Orbit Visualiser
+# SODST
 
-The Orbit Visualiser is a 3D Keplerian orbit visualisation tool for modelling the motion of a satellite around a central body, written in Python. The focus of this tool is on orbital geometry and satellite kinematics. Has basic orbital propagation (currently no GUI functionality).
+SODST is a 3D Keplerian orbit visualisation tool for modelling the motion of a satellite around a central body, written in Python. The focus of this tool is on orbital geometry and satellite kinematics. Has basic orbital propagation (currently no GUI functionality).
 
 <img width="547" height="310" alt="3d-demo-2" src="https://github.com/user-attachments/assets/85f96859-3ba7-43a7-bb8a-a56d92fa4a3d" />
 
 ## Features
 
-Orbits are modelled and visualised in the Earth Centred Equatorial (ECI) frame, with the orbital geometry parametrised using:
+Orbits are modelled and visualised in the Earth Centred Inertial (ECI) frame, with the orbital geometry parametrised using:
   - Eccentricity
   - Radius of periapsis
   - Right ascension of the ascending node
   - Inclination
   - Argument of periapsis
+
+Preliminary orbit determination is also available as an option for generating orbits. Choose an algorithm from the drop down menu (as of writing only Gibbs has been implemented) and input the necessary obersvational data.
 
 The central body has a radius of 6738km and an adjustable gravitational parameter. The radius of periapsis has therefore been given a lower limit of 6739km (meaning that we are assuming this Earth sized body has no atmosphere, or at least that any atmosphere has no effect on orbital motion). The true anomaly of the orbiting satellite is also adjustable to evaluate the kinematic state at different orbital positions. Various orbital and kinematic quantities are
 calculated and displayed, including (but not limited to):
@@ -35,6 +37,7 @@ There are several features that are in development or planned:
   - A web interface
   - Option to change reference frame
   - Option to change parametrisation of orbital geometry
+  - Additional determination algorithm options
 
 ## Notes on the physical model
 
@@ -64,13 +67,13 @@ These are also listed in requirements.txt.
 Clone the repository:
 
 ```bash
-git clone https://github.com/Phim226/orbit-visualiser.git
+git clone https://github.com/Cosmoseer/SODST.git
 ```
 
 Navigate to the project folder:
 
 ```bash
-cd orbit-visualiser
+cd SODST
 ```
 Create a virtual environment:
 
@@ -124,7 +127,7 @@ The ```-e``` in requirements.txt ensures that the package is editable, which ens
 Run the program:
 
 ```python
-python src/orbit_visualiser/main.py
+python src/sodst/main.py
 ```
 
 When you're finished using the program or making changes then run:
@@ -135,7 +138,7 @@ deactivate
 to deactivate the virtual environment. When returning to the program, activate venv again using the commands above. So long as the project folder or .venv folder hasn't changed then you shouldn't need to reinstall any dependencies.
 
 ## Using Orbit Propagation
-As of the current version (v0.4.5) there is no CLI or GUI functionality for the orbit propagation. Navigate to src/orbit_visualiser/core/propagation.py, and go to the bottom of the file to the code snippet:
+As of the current version (v0.6.0) there is no CLI or GUI functionality for the orbit propagation. Navigate to src/sodst/core/propagation.py, and go to the bottom of the file to the code snippet:
 ```python
 if __name__ == "__main__":
 
@@ -153,7 +156,7 @@ if __name__ == "__main__":
 
     print(f"Difference in radius after propagating: {rf - r0}")
 ```
-The orbit propagation function takes the Orbit object and propagation end time (the start time is always 0, and begins the propagation at the true anomaly (nu) set in the constructor Orbit.from_orbital_elements). The values set in the code snippet above result in the propagation of a circular orbit of radius 50,000km, starting at the perifocal position (50000, 0, 0) lasting for one orbital period. For non-circular orbits nu = 0.0 is periapsis. The true anomaly is in radians, so nu = pi is apoapsis.
+The orbit propagation function takes the Orbit object and propagation end time (the start time is always 0, and begins the propagation at the true anomaly (nu) set in the constructor Orbit.from_orbital_elements). The values set in the code snippet above result in the propagation of a circular orbit of radius 50,000km, starting at the position (50000, 0, 0) lasting for one orbital period. For non-circular orbits nu = 0.0 is periapsis. The true anomaly is in radians, so nu = pi is apoapsis.
 
 In order to get accurate results you should keep the end time on the order of 10 or at most 100 periods. The integrators used by scipy aren't symplectic, so there is significant energy drift over longer propagations.
 

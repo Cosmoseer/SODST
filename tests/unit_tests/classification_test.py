@@ -1,5 +1,5 @@
 import pytest
-from orbit_visualiser.core import OrbitType, OrbitMotion, orbit_type, orbit_motion_type
+from sodst.core import OrbitType, OrbitMotion, orbit_type, orbit_motion_type
 from tests.test_cases import orbit_type_test_cases, motion_type_test_cases
 
 @pytest.mark.parametrize("e, type", orbit_type_test_cases)
