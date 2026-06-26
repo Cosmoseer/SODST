@@ -3,7 +3,7 @@ import numpy as np
 from numpy.typing import NDArray
 from math import pi
 from typing import Callable
-from orbit_visualiser.core import CentralBody, Satellite, Orbit, asymptote_anomaly
+from sodst.core import CentralBody, Satellite, Orbit, asymptote_anomaly
 
 # ---------- True anomaly grids --------------------
 @pytest.fixture(scope = "session")

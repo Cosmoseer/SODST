@@ -1,0 +1,76 @@
+from tkinter import Event
+from typing import Callable, Any, Literal
+from sodst.ui.input.elements_controller import ElementsController
+from sodst.ui.properties.properties_controller import PropertiesController
+from sodst.ui.figure.orbit_figure_controller import OrbitFigureController
+from sodst.ui.input.determ_controller import DetermController
+from sodst.ui.common.controller import Controller
+#from orbit_visualiser.ui.config.display_panel.display_panel_controller import DisplayController
+from sodst.ui.data_access import OrbitDataAccess
+from sodst.ui.ui_builder import UIBuilder
+from sodst.ui.input.elements_builder import ElementsBuilder
+from sodst.ui.input.determ_builder import DetermBuilder
+
+class UIController(Controller):
+
+    def __init__(self, builder: UIBuilder, oda: OrbitDataAccess):
+        super().__init__(builder, oda)
+
+        self._figure_controller = OrbitFigureController(builder.figure_builder, oda)
+        self._elements_controller = ElementsController(builder.elements_builder, oda, self._figure_controller)
+        self._determ_controller = DetermController(builder.determ_builder, oda, self._figure_controller, builder.elements_builder)
+        self._properties_controller = PropertiesController(builder.properties_builder, oda)
+
+        self._callbacks: dict[str, Callable[[Any], Any]] = {
+                "manual_input_changed": self.manual_input_changed,
+                "reset_state": self.reset_state,
+                "format_display_value": self.format_display_value,
+                "slider_changed": self.slider_changed,
+                "determine_orbit": self.determine_orbit
+            }
+
+    @property
+    def callbacks(self) -> dict[str, Callable[[Any], Any]]:
+        return self._callbacks
+
+    # TODO : remove reliance on variable argument, since it's used to get the value of the entries which can be obtained from event.widget.get()
+    def manual_input_changed(
+            self, cls: ElementsBuilder | DetermBuilder, variable: str, event: Event
+    ) -> None:
+        if isinstance(cls, ElementsBuilder):
+            self._elements_controller.update_from_manual_input(variable)
+            self._properties_controller.update_display()
+
+        elif isinstance(cls, DetermBuilder):
+            self._determ_controller.validate_determination_input(variable)
+            if variable == "mu":
+                self._determ_controller.slider_entry_interaction(
+                    "entry", variable, float(event.widget.get())
+                )
+
+    def reset_state(self) -> None:
+        return self._elements_controller.reset_state()
+
+    def format_display_value(self, value: float | str, units: str | None) -> str:
+        return self._properties_controller.format_display_value(value, units)
+
+    def slider_changed(
+            self,
+            cls: ElementsBuilder | DetermBuilder,
+            variable: str,
+            new_val: str | float
+    ) -> None:
+        if isinstance(cls, ElementsBuilder):
+            self._elements_controller.update_variable(
+                variable,
+                "slider",
+                new_val
+            )
+            self._properties_controller.update_display()
+        elif isinstance(cls, DetermBuilder):
+            self._determ_controller.slider_entry_interaction("slider", variable, float(new_val))
+
+    def determine_orbit(
+            self, algorithm: Literal["state", "gibbs", "lambert", "range_angle", "angles_only", "gauss"]
+    ) -> None:
+        self._determ_controller.determine_orbit(algorithm)

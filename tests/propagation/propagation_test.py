@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from typing import Callable
-from orbit_visualiser.core import Orbit, run_orbit_prop, get_init_conditions_from_orbit
+from sodst.core import Orbit, run_orbit_prop, get_init_conditions_from_orbit
 from tests.test_cases import typical_closed_test_cases
 
 # TODO: Improve testing tolerances across difference orbit sizes and eccentricities.
