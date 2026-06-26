@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from typing import Callable
 from numpy.typing import NDArray
-from orbit_visualiser.core import OrbitType, Satellite
+from sodst.core import OrbitType, Satellite
 from tests.test_cases import full_test_cases
 
 

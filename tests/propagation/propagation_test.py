@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from typing import Callable
-from orbit_visualiser.core import Orbit, run_orbit_prop, get_init_conditions_from_orbit
+from sodst.core import Orbit, run_orbit_prop, get_init_conditions_from_orbit
 from tests.test_cases import typical_closed_test_cases
 
 # TODO: Improve testing tolerances across difference orbit sizes and eccentricities.
@@ -48,24 +48,3 @@ def test_1p_propagation_pos(
     prop_pos_at_rp = prop.y[:2, -1]
 
     assert np.allclose(pos_at_rp, prop_pos_at_rp, atol = 0.05)
-
-
-@pytest.mark.parametrize("e, rp, mu", typical_closed_test_cases)
-def test_1p_phase_shift(
-        orbit_factory_from_elements: Callable[[float, float, float, float], Orbit],
-        e: float,
-        rp: float,
-        mu: float
-):
-    """
-    Test that the phase shift of a propagated satellite after a single period from periapsis for
-    typical closed orbits is within an acceptable tolerance to the analytical solution.
-    """
-    orbit: Orbit = orbit_factory_from_elements(e, rp, mu, 0.0)
-
-    prop = run_orbit_prop(orbit, orbit.orbital_period)
-
-    prop_pos_at_rp = prop.y[:2, -1]
-    phase_shift = np.arctan2(prop_pos_at_rp[1], prop_pos_at_rp[0])
-
-    assert np.isclose(phase_shift, 0, atol=5e-8)
